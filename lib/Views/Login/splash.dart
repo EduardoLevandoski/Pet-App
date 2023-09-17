@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pet_app/Views/Login/login.dart';
-import 'package:pet_app/Views/principal.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});

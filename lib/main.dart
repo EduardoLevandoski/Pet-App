@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Utils/util_cores.dart';
-import 'package:pet_app/Views/Login/splash.dart';
+import 'package:pet_app/Views/principal.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Pet Application',
       debugShowCheckedModeBanner: false,
       theme: temaPrincipal,
-      home: const Splash(),
+      home: const Principal(),
     );
   }
 }

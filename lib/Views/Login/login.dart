@@ -23,7 +23,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -37,8 +36,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 autofocus: false,
                 controller: controladoraUsuario,
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.all(16),
                   labelText: 'Usuário',
                 ),
               ),
@@ -46,9 +43,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               TextField(
                 autofocus: false,
                 controller: controladoraSenha,
+                obscureText: true,
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.all(16),
                   labelText: 'Senha',
                 ),
               ),
