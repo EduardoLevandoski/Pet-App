@@ -89,7 +89,7 @@ class _CadastroState extends State<Cadastro> with SingleTickerProviderStateMixin
     User? user = await _auth.cadastroEmailSenha(email: _controladoraEmail.text, password: _controladoraSenha.text);
 
     if (user != null) {
-      Get.offAll(Principal());
+      Get.offAll(() => Principal());
     }
   }
 }

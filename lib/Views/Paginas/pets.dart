@@ -55,7 +55,7 @@ Widget CardPet({
     clipBehavior: Clip.antiAliasWithSaveLayer,
     child: InkWell(
       onTap: () {
-        Get.to(PaginaPet(pet: pet));
+        Get.to(() => PaginaPet(pet: pet));
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

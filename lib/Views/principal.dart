@@ -63,7 +63,7 @@ Widget CardMenuPrincipal({
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
         onTap: () {
-          Get.to(paginaAcesso);
+          Get.to(() => paginaAcesso);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

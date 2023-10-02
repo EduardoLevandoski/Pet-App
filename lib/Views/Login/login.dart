@@ -72,7 +72,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               const SizedBox(height: 10),
               GestureDetector(
                 onTap: () {
-                  Get.to(Cadastro());
+                  Get.to(() => Cadastro());
                 },
                 child: SizedBox(
                   width: RetornaLargura(context),
@@ -90,7 +90,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     User? user = await _auth.loginEmailSenha(email: _controladoraEmail.text, password: _controladoraSenha.text);
 
     if (user != null) {
-      Get.offAll(Principal());
+      Get.offAll(() => Principal());
     }
   }
 }

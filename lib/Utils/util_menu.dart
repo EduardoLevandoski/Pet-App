@@ -1,12 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/Utils/util_auth.dart';
 import 'package:pet_app/Utils/util_cores.dart';
 import 'package:pet_app/Views/Login/login.dart';
 import 'package:pet_app/Views/Paginas/pets.dart';
 import 'package:pet_app/Views/Paginas/servicos.dart';
 
 Widget DrawerPadrao(context) {
+  final FirebaseAuthService _auth = FirebaseAuthService();
+
   return Drawer(
     child: ListView(
       padding: EdgeInsets.zero,
@@ -32,22 +35,22 @@ Widget DrawerPadrao(context) {
             icone: Icons.pets,
             onTap: () {
               Navigator.of(context).pop(context);
-              Get.to(PaginaPets());
+              Get.to(() => PaginaPets());
             }),
         RetornaTileDrawer(
             sPagina: "Serviços",
             icone: Icons.bathtub,
             onTap: () {
               Navigator.of(context).pop(context);
-              Get.to(PaginaServicos());
+              Get.to(() => PaginaServicos());
             }),
         RetornaTileDrawer(
             sPagina: "Sair",
             icone: Icons.exit_to_app,
             onTap: () {
-              FirebaseAuth.instance.signOut();
+              _auth.logout();
               Navigator.of(context).pop(context);
-              Get.offAll(Login());
+              Get.offAll(() => Login());
             }),
       ],
     ),

@@ -26,4 +26,8 @@ class FirebaseAuthService {
 
     return null;
   }
+
+  void logout() async {
+    await FirebaseAuth.instance.signOut();
+  }
 }
