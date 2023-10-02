@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Utils/util_cores.dart';
@@ -44,6 +45,7 @@ Widget DrawerPadrao(context) {
             sPagina: "Sair",
             icone: Icons.exit_to_app,
             onTap: () {
+              FirebaseAuth.instance.signOut();
               Navigator.of(context).pop(context);
               Get.offAll(Login());
             }),

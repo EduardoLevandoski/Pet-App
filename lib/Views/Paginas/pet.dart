@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/Models/Pet.dart';
-import 'package:pet_app/Utils/util.dart';
-import 'package:pet_app/Utils/util_cores.dart';
 import 'package:pet_app/Views/Paginas/petInfo.dart';
 
 class PaginaPet extends StatefulWidget {
@@ -13,8 +11,7 @@ class PaginaPet extends StatefulWidget {
   State<PaginaPet> createState() => _PaginaPetState();
 }
 
-class _PaginaPetState extends State<PaginaPet>
-    with SingleTickerProviderStateMixin {
+class _PaginaPetState extends State<PaginaPet> with SingleTickerProviderStateMixin {
   List<Tab> listaAbas = [
     const Tab(text: "INFO"),
     const Tab(text: "ATENDIMENTOS"),

@@ -36,8 +36,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Lottie.asset('assets/splashart.json',
-                    controller: controladoraAnimacao, onLoaded: (value) {
+                Lottie.asset('assets/splashart.json', controller: controladoraAnimacao, onLoaded: (value) {
                   controladoraAnimacao.addStatusListener((status) async {
                     if (status == AnimationStatus.completed) {
                       await Get.offAll(const Login());

@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:pet_app/Models/Pet.dart';
-import 'package:pet_app/Utils/util_menu.dart';
-import 'package:pet_app/Views/Paginas/pets.dart';
-import 'package:pet_app/Views/Paginas/servicos.dart';
 
 class PaginaPetInfo extends StatefulWidget {
   Pet pet;
@@ -14,8 +10,7 @@ class PaginaPetInfo extends StatefulWidget {
   State<PaginaPetInfo> createState() => _PaginaPetInfoState();
 }
 
-class _PaginaPetInfoState extends State<PaginaPetInfo>
-    with SingleTickerProviderStateMixin {
+class _PaginaPetInfoState extends State<PaginaPetInfo> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -79,7 +74,7 @@ class _PaginaPetInfoState extends State<PaginaPetInfo>
   }
 }
 
-Widget LinhaConteudo({required String sTitulo, String? sDescricao}){
+Widget LinhaConteudo({required String sTitulo, String? sDescricao}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [

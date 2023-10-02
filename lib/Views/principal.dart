@@ -11,8 +11,7 @@ class Principal extends StatefulWidget {
   State<Principal> createState() => _PrincipalState();
 }
 
-class _PrincipalState extends State<Principal>
-    with SingleTickerProviderStateMixin {
+class _PrincipalState extends State<Principal> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -38,8 +37,7 @@ class _PrincipalState extends State<Principal>
                 paginaAcesso: PaginaPets()),
             CardMenuPrincipal(
                 sTitulo: "Serviços",
-                sDescricao:
-                    "Solicitar, editar ou cadastrar serviços ou atendimentos para seus pets.",
+                sDescricao: "Solicitar, editar ou cadastrar serviços ou atendimentos para seus pets.",
                 urlImagem: "assets/images/pet-service.jpg",
                 paginaAcesso: PaginaServicos()),
             const SizedBox(height: 80),

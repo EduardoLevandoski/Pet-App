@@ -8,8 +8,7 @@ class PaginaServicos extends StatefulWidget {
   State<PaginaServicos> createState() => _PaginaServicosState();
 }
 
-class _PaginaServicosState extends State<PaginaServicos>
-    with SingleTickerProviderStateMixin {
+class _PaginaServicosState extends State<PaginaServicos> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();

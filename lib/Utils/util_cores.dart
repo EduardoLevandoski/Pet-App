@@ -24,8 +24,8 @@ ThemeData temaPrincipal = ThemeData(
       floatingLabelStyle: TextStyle(color: corSecundaria),
       contentPadding: const EdgeInsets.all(12.0),
       focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: corSecundaria),
-  )),
+        borderSide: BorderSide(color: corSecundaria),
+      )),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: corPrimaria,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Models/Pet.dart';
 import 'package:pet_app/Utils/util.dart';
-import 'package:pet_app/Utils/util_cores.dart';
 import 'package:pet_app/Views/Paginas/pet.dart';
 
 class PaginaPets extends StatefulWidget {
@@ -12,8 +11,7 @@ class PaginaPets extends StatefulWidget {
   State<PaginaPets> createState() => _PaginaPetsState();
 }
 
-class _PaginaPetsState extends State<PaginaPets>
-    with SingleTickerProviderStateMixin {
+class _PaginaPetsState extends State<PaginaPets> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -39,8 +37,7 @@ class _PaginaPetsState extends State<PaginaPets>
         crossAxisCount: 2,
         padding: const EdgeInsets.fromLTRB(4, 4, 4, 80),
         children: List.generate(3, (index) {
-          return CardPet(
-              pet: listaPets[index]);
+          return CardPet(pet: listaPets[index]);
         }),
       ),
     );
