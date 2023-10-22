@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/Models/Pet.dart';
+import 'package:pet_app/Utils/util.dart';
 
 class PaginaPetInfo extends StatefulWidget {
   Pet pet;
@@ -19,51 +20,121 @@ class _PaginaPetInfoState extends State<PaginaPetInfo> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton(
+        tooltip: "Editar pet",
+        onPressed: () {},
+        child: const Icon(Icons.edit),
+      ),
       body: SingleChildScrollView(
-        child: Column(
+        padding: const EdgeInsets.only(bottom: 80),
+        child: Stack(
+          alignment: Alignment.topCenter,
+          clipBehavior: Clip.none,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 6.0, left: 6.0, top: 6.0),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
-                      child: Text(
-                        widget.pet.petNome,
-                        style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.grey[800],
+            Container(
+              height: RetornaAlturaTela(context) * 1.1,
+            ),
+            Image.asset(
+              widget.pet.petImgUrl ?? "",
+              width: double.infinity,
+              height: RetornaAlturaTela(context) / 1.9,
+              fit: BoxFit.cover,
+            ),
+            Positioned(
+              top: RetornaAlturaTela(context) / 2.2,
+              left: 20,
+              right: 20,
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          spreadRadius: 1,
+                          blurRadius: 7, // changes position of shadow
                         ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(22.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(widget.pet.petNome, style: const TextStyle(fontSize: 18.0)),
+                              const SizedBox(width: 5),
+                              const Icon(Icons.pets_sharp)
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(child: ColunaConteudo(sTitulo: "Raça", sDescricao: widget.pet.petRaca)),
+                              Expanded(
+                                  flex: 2,
+                                  child: ColunaConteudo(
+                                      sTitulo: "Idade",
+                                      sDescricao:
+                                          widget.pet.petIdade != null ? "${widget.pet.petIdade!.month} mêses" : null)),
+                              Expanded(child: ColunaConteudo(sTitulo: "Sexo", sDescricao: widget.pet.petSexo)),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(child: ColunaConteudo(sTitulo: "Espécie", sDescricao: widget.pet.petEspecie)),
+                              Expanded(flex: 2, child: ColunaConteudo(sTitulo: "Peso", sDescricao: widget.pet.petPeso)),
+                              Expanded(child: ColunaConteudo(sTitulo: "Cor", sDescricao: widget.pet.petCor)),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    Image.asset(
-                      widget.pet.petImgUrl,
-                      height: 220,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          spreadRadius: 1,
+                          blurRadius: 7, // changes position of shadow
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    child: Padding(
+                      padding: const EdgeInsets.all(22.0),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(height: 10),
-                          LinhaConteudo(sTitulo: "Raça"),
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          LinhaConteudo(sTitulo: "Tutor", sDescricao: null),
                           const Divider(),
-                          LinhaConteudo(sTitulo: "Data de aniversário"),
+                          LinhaConteudo(sTitulo: "Endereço", sDescricao: null),
+                          const Divider(),
+                          LinhaConteudo(sTitulo: "Cidade", sDescricao: null),
+                          const Divider(),
+                          LinhaConteudo(sTitulo: "Estado", sDescricao: null),
+                          const Divider(),
+                          LinhaConteudo(sTitulo: "Telefone", sDescricao: null),
+                          const Divider(),
+                          LinhaConteudo(sTitulo: "Celular", sDescricao: null),
                           const Divider(),
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 80),
@@ -78,8 +149,17 @@ Widget LinhaConteudo({required String sTitulo, String? sDescricao}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Text(sTitulo),
-      Text(sDescricao ?? "-"),
+      Text(sTitulo, style: const TextStyle(fontSize: 16.0)),
+      Text(sDescricao ?? "-", style: const TextStyle(color: Colors.grey), textAlign: TextAlign.center, maxLines: 1),
+    ],
+  );
+}
+
+Widget ColunaConteudo({required String sTitulo, String? sDescricao}) {
+  return Column(
+    children: [
+      Text(sTitulo, style: const TextStyle(fontSize: 18.0)),
+      Text(sDescricao ?? "-", style: const TextStyle(color: Colors.grey), textAlign: TextAlign.center, maxLines: 2),
     ],
   );
 }

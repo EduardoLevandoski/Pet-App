@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Utils/util.dart';
 import 'package:pet_app/Utils/util_auth.dart';
+import 'package:pet_app/Utils/util_bottomNavigationBar.dart';
 import 'package:pet_app/Views/Login/cadastro.dart';
-import 'package:pet_app/Views/principal.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -90,7 +90,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     User? user = await _auth.loginEmailSenha(email: _controladoraEmail.text, password: _controladoraSenha.text);
 
     if (user != null) {
-      Get.offAll(() => Principal());
+      Get.offAll(() => utilBottomNavigationBar());
     }
   }
 }

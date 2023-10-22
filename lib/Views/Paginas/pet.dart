@@ -13,7 +13,8 @@ class PaginaPet extends StatefulWidget {
 
 class _PaginaPetState extends State<PaginaPet> with SingleTickerProviderStateMixin {
   List<Tab> listaAbas = [
-    const Tab(text: "INFO"),
+    const Tab(text: "PET"),
+    const Tab(text: "CARTEIRA DE VACINAÇÃO"),
     const Tab(text: "ATENDIMENTOS"),
   ];
 
@@ -30,12 +31,16 @@ class _PaginaPetState extends State<PaginaPet> with SingleTickerProviderStateMix
         appBar: AppBar(
             title: Text(widget.pet.petNome),
             bottom: TabBar(
+              isScrollable: true,
+              dividerColor: Colors.transparent,
+              indicatorSize: TabBarIndicatorSize.tab,
               tabs: listaAbas,
-            )),
-        backgroundColor: Colors.white,
+            )
+        ),
         body: TabBarView(
           children: [
             PaginaPetInfo(pet: widget.pet),
+            Container(),
             Container(),
           ],
         ),

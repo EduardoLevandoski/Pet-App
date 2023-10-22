@@ -42,7 +42,6 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                       await Get.offAll(const Login());
                     }
                   });
-
                   controladoraAnimacao.duration = value.duration;
                   controladoraAnimacao.forward();
                 }),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Models/Pet.dart';
-import 'package:pet_app/Utils/util.dart';
 import 'package:pet_app/Views/Paginas/pet.dart';
 
 class PaginaPets extends StatefulWidget {
@@ -18,25 +17,42 @@ class _PaginaPetsState extends State<PaginaPets> with SingleTickerProviderStateM
   }
 
   List<Pet> listaPets = [
-    Pet(1, "Pedro", "assets/examples/dog-1.jpg"),
-    Pet(2, "Márcio", "assets/examples/dog-5.jpg"),
-    Pet(3, "Mila", "assets/examples/cat-2.jpg"),
+    Pet(
+        petCod: 1,
+        petNome: "Pedro",
+        petRaca: "Vira-lata",
+        petImgUrl: "assets/examples/dog-1.jpg",
+        petIdade: DateTime(2002, 4, 12),
+        petSexo: "Macho"),
+    Pet(
+        petCod: 2,
+        petNome: "Márcio",
+        petRaca: "Poddle",
+        petImgUrl: "assets/examples/dog-5.jpg",
+        petIdade: DateTime(2002, 2, 24),
+        petSexo: "Macho"),
+    Pet(
+        petCod: 3,
+        petNome: "Pedro",
+        petRaca: "Scottish-Fold",
+        petImgUrl: "assets/examples/cat-2.jpg",
+        petIdade: DateTime(2002, 5, 23),
+        petSexo: "Macho"),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarPadrao(sTitulo: "Pets"),
       floatingActionButton: FloatingActionButton(
         tooltip: "Cadastrar um pet",
         onPressed: () {},
         child: const Icon(Icons.add),
       ),
-      backgroundColor: Colors.white,
       body: GridView.count(
         crossAxisCount: 2,
+        childAspectRatio: 0.63,
         padding: const EdgeInsets.fromLTRB(4, 4, 4, 80),
-        children: List.generate(3, (index) {
+        children: List.generate(listaPets.length, (index) {
           return CardPet(pet: listaPets[index]);
         }),
       ),
@@ -50,9 +66,10 @@ Widget CardPet({
   return Card(
     margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(8.0),
     ),
     clipBehavior: Clip.antiAliasWithSaveLayer,
+    elevation: 3.0,
     child: InkWell(
       onTap: () {
         Get.to(() => PaginaPet(pet: pet));
@@ -60,23 +77,54 @@ Widget CardPet({
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Ink.image(
-            image: AssetImage(pet.petImgUrl),
-            height: 120,
-            fit: BoxFit.cover,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: Image(
+              image: AssetImage(pet.petImgUrl ?? ""),
+              height: 200,
+              fit: BoxFit.cover,
+            ),
           ),
           Container(
-            padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+            padding: const EdgeInsets.fromLTRB(12, 9, 12, 2),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
                   pet.petNome,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     color: Colors.grey[800],
                   ),
                 ),
+                Text(
+                  pet.petRaca ?? "-",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      pet.petIdade != null ? "${pet.petIdade!.month} mêses" : "-",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    Text(
+                      pet.petSexo ?? "-",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                )
+                //const Divider(),
               ],
             ),
           ),

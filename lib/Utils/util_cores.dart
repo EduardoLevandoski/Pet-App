@@ -3,10 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 Color corPrimaria = const Color(0xff444C5E);
 Color corSecundaria = const Color(0xff59C5C5);
-Color corTerciara = const Color(0xffe8eefa);
 
 ThemeData temaPrincipal = ThemeData(
-  colorScheme: ColorScheme.fromSeed(seedColor: corPrimaria),
+  colorScheme: ColorScheme.fromSeed(seedColor: corPrimaria, background: const Color(0xffF0F0F0)),
   textTheme: GoogleFonts.robotoTextTheme(),
   appBarTheme: AppBarTheme(
     titleTextStyle: const TextStyle(
@@ -33,6 +32,11 @@ ThemeData temaPrincipal = ThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
     ),
   ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: corPrimaria,
+    selectedItemColor: corSecundaria,
+    unselectedItemColor: Colors.white,
+  ),
   drawerTheme: const DrawerThemeData(
     shadowColor: Colors.white,
     shape: BeveledRectangleBorder(),
@@ -43,8 +47,8 @@ ThemeData temaPrincipal = ThemeData(
       fontSize: 14.0,
     ),
   ),
-  cardTheme: CardTheme(
-    color: corTerciara,
+  cardTheme: const CardTheme(
+    color: Colors.white,
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: corSecundaria,
