@@ -39,7 +39,7 @@ Widget utilDrawer(context) {
             onTap: () {
               _auth.logout();
               Navigator.of(context).pop(context);
-              Get.offAll(() => Login());
+              Get.offAll(() => const Login());
             }),
       ],
     ),

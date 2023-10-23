@@ -20,7 +20,7 @@ ThemeData temaPrincipal = ThemeData(
   ),
   inputDecorationTheme: InputDecorationTheme(
       border: const OutlineInputBorder(),
-      floatingLabelStyle: TextStyle(color: corSecundaria),
+      floatingLabelStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
       contentPadding: const EdgeInsets.all(12.0),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(color: corSecundaria),
@@ -29,6 +29,12 @@ ThemeData temaPrincipal = ThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: corPrimaria,
       foregroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+    ),
+  ),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      foregroundColor: corPrimaria,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
     ),
   ),

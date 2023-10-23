@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Models/Pet.dart';
 import 'package:pet_app/Views/Paginas/pet.dart';
+import 'package:pet_app/Views/Paginas/petCadastro.dart';
 
 class PaginaPets extends StatefulWidget {
   const PaginaPets({super.key});
@@ -45,7 +46,11 @@ class _PaginaPetsState extends State<PaginaPets> with SingleTickerProviderStateM
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         tooltip: "Cadastrar um pet",
-        onPressed: () {},
+        onPressed: () {
+          Get.to(() => PaginaPetCadastro())?.then((value) {
+            setState(() {});
+          });
+        },
         child: const Icon(Icons.add),
       ),
       body: GridView.count(

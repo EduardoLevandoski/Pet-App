@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pet_app/Models/Pet.dart';
 import 'package:pet_app/Utils/util.dart';
+import 'package:pet_app/Views/Paginas/petCadastro.dart';
 
 class PaginaPetInfo extends StatefulWidget {
   Pet pet;
@@ -22,7 +24,11 @@ class _PaginaPetInfoState extends State<PaginaPetInfo> with SingleTickerProvider
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         tooltip: "Editar pet",
-        onPressed: () {},
+        onPressed: () {
+          Get.to(() => PaginaPetCadastro(pet: widget.pet))?.then((value) {
+            setState(() {});
+          });
+        },
         child: const Icon(Icons.edit),
       ),
       body: SingleChildScrollView(

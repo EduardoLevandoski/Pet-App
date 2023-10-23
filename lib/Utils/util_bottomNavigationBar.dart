@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Utils/util_cores.dart';
+import 'package:pet_app/Views/Paginas/perfil.dart';
 import 'package:pet_app/Views/Paginas/pets.dart';
 import 'package:pet_app/Views/Paginas/servicos.dart';
 import 'package:pet_app/Views/principal.dart';
@@ -17,11 +18,11 @@ class utilBottomNavigationBar extends StatefulWidget {
 class _utilBottomNavigationBarState extends State<utilBottomNavigationBar> {
   utilGlobal global = Get.find<utilGlobal>();
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Principal(),
-    PaginaPets(),
-    PaginaServicos(),
-    PaginaServicos(),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const Principal(),
+    const PaginaPets(),
+    const PaginaServicos(),
+    PaginaPerfil(),
   ];
 
   atualizaIndexNavigation(int index) {

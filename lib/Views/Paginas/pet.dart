@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/Models/Pet.dart';
+import 'package:pet_app/Views/Paginas/petAtendimento.dart';
+import 'package:pet_app/Views/Paginas/petCarteira.dart';
 import 'package:pet_app/Views/Paginas/petInfo.dart';
+import 'package:pet_app/Views/Paginas/petVacinas.dart';
 
 class PaginaPet extends StatefulWidget {
   Pet pet;
@@ -14,7 +17,8 @@ class PaginaPet extends StatefulWidget {
 class _PaginaPetState extends State<PaginaPet> with SingleTickerProviderStateMixin {
   List<Tab> listaAbas = [
     const Tab(text: "PET"),
-    const Tab(text: "CARTEIRA DE VACINAÇÃO"),
+    const Tab(text: "CONTROLE DE VACINAÇÃO"),
+    const Tab(text: "CONTROLE DE PARASITAS"),
     const Tab(text: "ATENDIMENTOS"),
   ];
 
@@ -40,8 +44,9 @@ class _PaginaPetState extends State<PaginaPet> with SingleTickerProviderStateMix
         body: TabBarView(
           children: [
             PaginaPetInfo(pet: widget.pet),
-            Container(),
-            Container(),
+            PaginaPetVacinas(),
+            PaginaPetCarteira(),
+            PaginaPetAtendimento(),
           ],
         ),
       ),
