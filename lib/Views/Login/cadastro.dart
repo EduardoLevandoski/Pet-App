@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/Models/Usuario.dart';
 import 'package:pet_app/Utils/util.dart';
 import 'package:pet_app/Utils/util_auth.dart';
 import 'package:pet_app/Utils/util_bottomNavigationBar.dart';
+import 'package:pet_app/ViewModels/UsuarioCRUD.dart';
 
 class Cadastro extends StatefulWidget {
   const Cadastro({super.key});
@@ -13,11 +15,15 @@ class Cadastro extends StatefulWidget {
 }
 
 class _CadastroState extends State<Cadastro> with SingleTickerProviderStateMixin {
-  final FirebaseAuthService _auth = FirebaseAuthService();
+  final FirebaseAuthService _auth = Get.put(FirebaseAuthService());
+  final UsuarioFB _usuarioFB = Get.put(UsuarioFB());
 
-  TextEditingController _controladoraCpf = TextEditingController();
-  TextEditingController _controladoraEmail = TextEditingController();
-  TextEditingController _controladoraSenha = TextEditingController();
+  final TextEditingController _controladoraNome = TextEditingController();
+  final TextEditingController _controladoraCpf = TextEditingController();
+  final TextEditingController _controladoraEmail = TextEditingController();
+  final TextEditingController _controladoraSenha = TextEditingController();
+
+  bool bCarregando = false;
 
   @override
   void initState() {
@@ -43,6 +49,14 @@ class _CadastroState extends State<Cadastro> with SingleTickerProviderStateMixin
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text("Cadastro", style: TextStyle(fontSize: 22.0)),
+              const SizedBox(height: 20),
+              TextField(
+                autofocus: false,
+                controller: _controladoraNome,
+                decoration: const InputDecoration(
+                  labelText: 'Nome',
+                ),
+              ),
               const SizedBox(height: 20),
               TextField(
                 autofocus: false,
@@ -86,10 +100,38 @@ class _CadastroState extends State<Cadastro> with SingleTickerProviderStateMixin
   }
 
   void cadastrarUsuario() async {
-    User? user = await _auth.cadastroEmailSenha(email: _controladoraEmail.text, password: _controladoraSenha.text);
+    setState(() {
+      bCarregando = true;
+    });
 
-    if (user != null) {
-      Get.offAll(() => utilBottomNavigationBar());
+
+    try {
+      User? user = await _auth.cadastroEmailSenha(email: _controladoraEmail.text, password: _controladoraSenha.text);
+
+      if (user != null) {
+        _usuarioFB.criaUsuarioFB(usuario: Usuario(
+          uid: user.uid,
+          email: _controladoraEmail.text,
+          nome: _controladoraNome.text,
+          cpf: _controladoraCpf.text,
+        ));
+
+        setState(() {
+          bCarregando = false;
+        });
+
+        Get.offAll(() => utilBottomNavigationBar());
+      } else {
+
+        throw("Não fo possível cadastrar esse usuário");
+
+
+      }
+    } catch (e) {
+      setState(() {
+        bCarregando = false;
+      });
+      Get.snackbar("Erro", e.toString(), backgroundColor: Colors.redAccent, colorText: Colors.white);
     }
   }
 }

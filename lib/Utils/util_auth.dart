@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
-class FirebaseAuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class FirebaseAuthService extends GetxController {
+  static FirebaseAuthService get instance => Get.find();
+  final _auth = FirebaseAuth.instance;
 
   Future<User?> cadastroEmailSenha({required String email, required String password}) async {
     
@@ -9,10 +11,8 @@ class FirebaseAuthService {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       return credential.user;
     } catch (e) {
-      print(e);
+      rethrow;
     }
-
-    return null;
   }
 
   Future<User?> loginEmailSenha({required String email, required String password}) async {
@@ -21,10 +21,8 @@ class FirebaseAuthService {
       UserCredential credential = await _auth.signInWithEmailAndPassword(email: email, password: password);
       return credential.user;
     } catch (e) {
-      print(e);
+      rethrow;
     }
-
-    return null;
   }
 
   void logout() async {

@@ -96,7 +96,6 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
                   DropdownRaca(),
                   CampoTextField(sLabel: "Peso (Kg)", controladora: _controladoraPeso),
                   DropdownCor(),
-                  CampoTextField(sLabel: "Tutor", controladora: _controladoraTutor),
                   const SizedBox(height: 10),
                 ],
               ),

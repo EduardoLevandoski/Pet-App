@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/Models/Usuario.dart';
 import 'package:pet_app/Utils/util.dart';
 import 'package:pet_app/Utils/util_auth.dart';
 import 'package:pet_app/Utils/util_cores.dart';
 import 'package:pet_app/Utils/util_globals.dart';
+import 'package:pet_app/ViewModels/UsuarioCRUD.dart';
 import 'package:pet_app/Views/Login/login.dart';
 
 
@@ -16,7 +18,35 @@ class PaginaPerfil extends StatefulWidget {
 
 class _PaginaPerfilState extends State<PaginaPerfil> {
   final FirebaseAuthService _auth = FirebaseAuthService();
+  final UsuarioFB _usuarioFB = Get.put(UsuarioFB());
   utilGlobal global =  Get.find<utilGlobal>();
+
+  Usuario? usuario;
+  bool bCarregando = false;
+
+  @override
+  void initState() {
+    super.initState();
+    BuscaDados();
+  }
+
+  BuscaDados() async {
+    setState(() {
+      bCarregando = true;
+    });
+
+    try{
+      usuario = await _usuarioFB.buscaUsuarioPorIdFB(idUsuario: "68NFVwa9xEca3qWdbI4CvUwG4FD2");
+    } catch (e) {
+      Get.snackbar("Erro", e.toString(), backgroundColor: Colors.redAccent, colorText: Colors.white);
+    }
+
+    if (usuario != null) {
+      setState(() {
+        bCarregando = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +87,8 @@ class _PaginaPerfilState extends State<PaginaPerfil> {
                 ],
               ),
               const SizedBox(height: 10),
-              const Text("Usuario"),
-              const Text("usuario@gmail.com"),
+              Text(usuario!.nome!),
+              Text(usuario!.email!),
               const SizedBox(height: 20),
               SizedBox(
                 width: 200,
@@ -77,7 +107,7 @@ class _PaginaPerfilState extends State<PaginaPerfil> {
                   sTitulo: "Sair",
                   icone: Icons.exit_to_app,
                   onPress: () {
-                    GetDialogSimNao(
+                    GetDialogSimOuNao(
                       sTitulo: "Sim",
                       sConteudo: "Tem certeza que deseja sair?",
                       onPressedSim: () {

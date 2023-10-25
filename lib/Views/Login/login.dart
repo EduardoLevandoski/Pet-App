@@ -16,8 +16,10 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   final FirebaseAuthService _auth = FirebaseAuthService();
 
-  TextEditingController _controladoraEmail = TextEditingController();
-  TextEditingController _controladoraSenha = TextEditingController();
+  final TextEditingController _controladoraEmail = TextEditingController();
+  final TextEditingController _controladoraSenha = TextEditingController();
+
+  bool bCarregando = false;
 
   @override
   void initState() {
@@ -66,7 +68,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   onPressed: () {
                     loginUsuario();
                   },
-                  child: const Text('Entrar'),
+                  child: bCarregando ? CircularProgressPadrao() : const Text('Entrar'),
                 ),
               ),
               const SizedBox(height: 10),
@@ -87,10 +89,28 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   }
 
   void loginUsuario() async {
-    User? user = await _auth.loginEmailSenha(email: _controladoraEmail.text, password: _controladoraSenha.text);
+    setState(() {
+      bCarregando = true;
+    });
 
-    if (user != null) {
-      Get.offAll(() => utilBottomNavigationBar());
+    try {
+      User? user = await _auth.loginEmailSenha(email: _controladoraEmail.text, password: _controladoraSenha.text);
+
+      if (user != null) {
+        setState(() {
+          bCarregando = false;
+        });
+
+        Get.offAll(() => utilBottomNavigationBar());
+      } else {
+        throw ("Não foi possível encontrar esse usuário");
+      }
+    } catch (e) {
+      setState(() {
+        bCarregando = false;
+      });
+
+      Get.snackbar("Erro", e.toString(), backgroundColor: Colors.redAccent, colorText: Colors.white);
     }
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pet_app/Utils/util.dart';
 
 class PaginaPetVacinas extends StatefulWidget {
   const PaginaPetVacinas({super.key});

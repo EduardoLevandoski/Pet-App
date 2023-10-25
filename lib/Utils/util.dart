@@ -19,7 +19,18 @@ PreferredSizeWidget? AppBarPadrao({required String sTitulo}) {
   );
 }
 
-GetDialogSimNao({required String sTitulo, required String sConteudo, required onPressedSim, required onPressedNao}){
+Widget CircularProgressPadrao(){
+  return const SizedBox(
+    height: 20,
+    width: 20,
+    child: CircularProgressIndicator(
+      backgroundColor: Colors.transparent,
+      color: Colors.white,
+    ),
+  );
+}
+
+GetDialogSimOuNao({required String sTitulo, required String sConteudo, required onPressedSim, required onPressedNao}){
   return Get.defaultDialog(
     titlePadding: const EdgeInsets.only(top: 15),
     title: sTitulo,

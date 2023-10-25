@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Utils/util_bottomNavigationBar.dart';
 import 'package:pet_app/Utils/util_cores.dart';
 import 'package:pet_app/Utils/util_globals.dart';
+import 'package:pet_app/Views/Login/splash.dart';
 import 'package:pet_app/firebase_options.dart';
 
 void main() async {
@@ -24,7 +26,16 @@ class MyApp extends StatelessWidget {
       title: 'Pet Application',
       debugShowCheckedModeBanner: false,
       theme: temaPrincipal,
-      home: utilBottomNavigationBar(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return utilBottomNavigationBar();
+          } else {
+            return const Splash();
+          }
+        },
+      ),
     );
   }
 }
