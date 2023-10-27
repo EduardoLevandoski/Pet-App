@@ -13,6 +13,10 @@ bool bTecladoAberto(BuildContext context) {
   return MediaQuery.of(context).viewInsets.bottom > 0;
 }
 
+String retornaIniciais(String text) => text.isNotEmpty
+    ? text.trim().split(' ').map((l) => l[0]).take(2).join()
+    : '';
+
 PreferredSizeWidget? AppBarPadrao({required String sTitulo}) {
   return AppBar(
     title: Text(sTitulo),

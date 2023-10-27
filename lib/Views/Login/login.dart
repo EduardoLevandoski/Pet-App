@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Utils/util.dart';
-import 'package:pet_app/Utils/util_auth.dart';
+import 'package:pet_app/Services/auth_service.dart';
 import 'package:pet_app/Utils/util_bottomNavigationBar.dart';
 import 'package:pet_app/Views/Login/cadastro.dart';
 

@@ -16,7 +16,7 @@ class utilBottomNavigationBar extends StatefulWidget {
 }
 
 class _utilBottomNavigationBarState extends State<utilBottomNavigationBar> {
-  utilGlobal global = Get.find<utilGlobal>();
+  final utilGlobal _global = Get.put(utilGlobal());
 
   static final List<Widget> _widgetOptions = <Widget>[
     const Principal(),
@@ -26,12 +26,12 @@ class _utilBottomNavigationBarState extends State<utilBottomNavigationBar> {
   ];
 
   atualizaIndexNavigation(int index) {
-    global.updateBottomNavigationBarIndex(index);
+    _global.updateBottomNavigationBarIndex(index);
   }
 
   void _onItemTapped(int index) {
     setState(() {
-      global.updateBottomNavigationBarIndex(index);
+      _global.updateBottomNavigationBarIndex(index);
     });
   }
 
@@ -45,7 +45,7 @@ class _utilBottomNavigationBarState extends State<utilBottomNavigationBar> {
           ],
         ),
         body: Center(
-          child: _widgetOptions.elementAt(global.bottomNavigationBarIndex.value),
+          child: _widgetOptions.elementAt(_global.bottomNavigationBarIndex.value),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
@@ -70,7 +70,7 @@ class _utilBottomNavigationBarState extends State<utilBottomNavigationBar> {
               backgroundColor: corPrimaria,
             ),
           ],
-          currentIndex: global.bottomNavigationBarIndex.value,
+          currentIndex: _global.bottomNavigationBarIndex.value,
           onTap: _onItemTapped,
         ),
       ),

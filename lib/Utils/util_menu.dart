@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pet_app/Utils/util_auth.dart';
+import 'package:pet_app/Services/auth_service.dart';
 import 'package:pet_app/Utils/util_cores.dart';
 import 'package:pet_app/Views/Login/login.dart';
 
 Widget utilDrawer(context) {
-  final FirebaseAuthService _auth = FirebaseAuthService();
+  final FirebaseAuthService _auth = Get.put(FirebaseAuthService());
 
   return Drawer(
     child: ListView(

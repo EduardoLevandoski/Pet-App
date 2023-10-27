@@ -13,9 +13,26 @@ class UsuarioFB extends GetxController {
       rethrow;
     }
   }
-  
+
+  Future<void> editaUsuarioFB({required String idUsuario, required String novoNome, String? novoImgNome}) async {
+    try {
+      final query = await _db.collection("usuarios").where("uid", isEqualTo: idUsuario).get();
+
+      if (query.docs.isNotEmpty) {
+        await query.docs.first.reference.update({
+          "nome": novoNome,
+          if (novoImgNome != null) "imgNome": novoImgNome,
+        });
+      } else {
+        throw Exception("Não foi possivel encontrar o usário");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Usuario?> buscaUsuarioPorIdFB({required String idUsuario}) async {
-    try{
+    try {
       final snapshot = await _db.collection("usuarios").where("uid", isEqualTo: idUsuario).get();
       return snapshot.docs.map((e) => Usuario.fromSnapshot(e)).singleOrNull;
     } catch (e) {
@@ -23,4 +40,3 @@ class UsuarioFB extends GetxController {
     }
   }
 }
-

@@ -5,12 +5,16 @@ class Usuario {
   String? nome;
   String? email;
   String? cpf;
+  String? imgNome;
+  String? imgUrl;
 
   Usuario({
     this.uid,
     this.nome,
     this.email,
     this.cpf,
+    this.imgNome,
+    this.imgUrl,
   });
 
   factory Usuario.fromJson(Map<String, dynamic> json) {
@@ -19,6 +23,7 @@ class Usuario {
       nome: json["nome"],
       email: json["email"],
       cpf: json["cpf"],
+      imgNome: json["imgNome"],
     );
   }
 
@@ -28,6 +33,7 @@ class Usuario {
       "nome": nome,
       "email": email,
       "cpf": cpf,
+      "imgNome": imgNome,
     };
   }
 
@@ -39,6 +45,7 @@ class Usuario {
       nome: data["nome"],
       email: data["email"],
       cpf: data["cpf"],
+      imgNome: data["imgNome"],
     );
   }
 }
