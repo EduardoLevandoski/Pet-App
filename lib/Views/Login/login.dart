@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pet_app/Utils/util.dart';
 import 'package:pet_app/Services/auth_service.dart';
+import 'package:pet_app/Utils/util.dart';
 import 'package:pet_app/Utils/util_bottomNavigationBar.dart';
 import 'package:pet_app/Views/Login/cadastro.dart';
+import 'package:pet_app/Views/Paginas/Perfil/alterarSenha.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -61,6 +62,21 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   labelText: 'Senha',
                 ),
               ),
+              const SizedBox(height: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => PaginaAlterarSenha());
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 2.5),
+                      child: Text("Esqueci minha senha", style: TextStyle(fontSize: 12.0, color: Colors.blueAccent)),
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(height: 15),
               SizedBox(
                 width: RetornaLargura(context),
@@ -74,7 +90,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               const SizedBox(height: 10),
               GestureDetector(
                 onTap: () {
-                  Get.to(() => Cadastro());
+                  FechaTeclado(context);
+                  Get.to(() => const Cadastro());
                 },
                 child: SizedBox(
                   width: RetornaLargura(context),
@@ -86,6 +103,27 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         ),
       ),
     );
+  }
+
+  void alterarSenha() async {
+    setState(() {
+      bCarregando = true;
+    });
+
+    try {
+      if (_controladoraEmail.text.isNotEmpty) {
+        await _auth.resetaSenha(email: _controladoraEmail.text);
+      }
+      Get.back(canPop: true);
+      setState(() {
+        bCarregando = false;
+      });
+    } catch (e) {
+      setState(() {
+        bCarregando = false;
+      });
+      Get.snackbar("Erro", e.toString(), backgroundColor: Colors.redAccent, colorText: Colors.white);
+    }
   }
 
   void loginUsuario() async {

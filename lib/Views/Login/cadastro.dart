@@ -1,12 +1,9 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Models/Usuario.dart';
-import 'package:pet_app/Services/storage_service.dart';
-import 'package:pet_app/Utils/util.dart';
 import 'package:pet_app/Services/auth_service.dart';
+import 'package:pet_app/Utils/util.dart';
 import 'package:pet_app/Utils/util_bottomNavigationBar.dart';
 import 'package:pet_app/ViewModels/UsuarioCRUD.dart';
 
@@ -19,7 +16,6 @@ class Cadastro extends StatefulWidget {
 
 class _CadastroState extends State<Cadastro> with SingleTickerProviderStateMixin {
   final FirebaseAuthService _auth = Get.put(FirebaseAuthService());
-  final FirebaseStorageService _storage = Get.put(FirebaseStorageService());
   final UsuarioFB _usuarioFB = Get.put(UsuarioFB());
 
   final TextEditingController _controladoraNome = TextEditingController();
@@ -27,8 +23,6 @@ class _CadastroState extends State<Cadastro> with SingleTickerProviderStateMixin
   final TextEditingController _controladoraEmail = TextEditingController();
   final TextEditingController _controladoraSenha = TextEditingController();
 
-  String? filePath;
-  String? fileNome;
   bool bCarregando = false;
 
   @override
@@ -89,33 +83,15 @@ class _CadastroState extends State<Cadastro> with SingleTickerProviderStateMixin
                   labelText: 'Senha',
                 ),
               ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: RetornaLargura(context),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final pick = await FilePicker.platform.pickFiles(
-                      allowMultiple: false,
-                      type: FileType.custom,
-                      allowedExtensions: ['png', 'jpg'],
-                    );
-
-                    if(pick != null){
-                      filePath = pick.files.single.path;
-                      fileNome = pick.files.single.name;
-                    }
-                  },
-                  child: const Text('Arquivo'),
-                ),
-              ),
               const SizedBox(height: 15),
               SizedBox(
                 width: RetornaLargura(context),
                 child: ElevatedButton(
                   onPressed: () {
+                    FechaTeclado(context);
                     cadastrarUsuario();
                   },
-                  child: const Text('Cadastrar-se'),
+                  child: bCarregando ? CircularProgressPadrao() : const Text('Cadastrar-se'),
                 ),
               ),
             ],
@@ -134,17 +110,12 @@ class _CadastroState extends State<Cadastro> with SingleTickerProviderStateMixin
     try {
       User? user = await _auth.cadastroEmailSenha(email: _controladoraEmail.text, password: _controladoraSenha.text);
 
-      if(filePath != null && fileNome != null) {
-        await _storage.enviaArquivo(filePath: filePath!, fileNome: fileNome!);
-      }
-
       if (user != null) {
         _usuarioFB.criaUsuarioFB(usuario: Usuario(
           uid: user.uid,
           email: _controladoraEmail.text,
           nome: _controladoraNome.text,
           cpf: _controladoraCpf.text,
-          imgNome: (filePath != null && fileNome != null) ? fileNome : null,
         ));
 
         setState(() {

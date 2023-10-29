@@ -5,7 +5,7 @@ class FirebaseAuthService extends GetxController {
   static FirebaseAuthService get instance => Get.find();
   final _auth = FirebaseAuth.instance;
 
-  Future getUsuarioAtual() async {
+  Future<User?> getUsuarioAtual() async {
     return _auth.currentUser;
   }
 

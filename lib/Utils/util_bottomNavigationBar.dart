@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Utils/util_cores.dart';
-import 'package:pet_app/Views/Paginas/perfil.dart';
-import 'package:pet_app/Views/Paginas/pets.dart';
-import 'package:pet_app/Views/Paginas/servicos.dart';
+import 'package:pet_app/Views/Paginas/Perfil/perfil.dart';
+import 'package:pet_app/Views/Paginas/Pet/pets.dart';
+import 'package:pet_app/Views/Paginas/Servicos/servicos.dart';
 import 'package:pet_app/Views/principal.dart';
 
 import 'util_globals.dart';
@@ -24,10 +24,6 @@ class _utilBottomNavigationBarState extends State<utilBottomNavigationBar> {
     const PaginaServicos(),
     PaginaPerfil(),
   ];
-
-  atualizaIndexNavigation(int index) {
-    _global.updateBottomNavigationBarIndex(index);
-  }
 
   void _onItemTapped(int index) {
     setState(() {

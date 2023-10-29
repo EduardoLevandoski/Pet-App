@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+//Cores principais
 Color corPrimaria = const Color(0xff444C5E);
 Color corSecundaria = const Color(0xff59C5C5);
+
+//Cores customizadas
+Color corCinza = const Color(0xFFD1D1D1);
 
 ThemeData temaPrincipal = ThemeData(
   colorScheme: ColorScheme.fromSeed(seedColor: corPrimaria, background: const Color(0xffF0F0F0)),
