@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 final formataData = DateFormat('dd/MM/yyyy');
+final formataDataCurta = DateFormat('dd/MM/yy');
 final formataDataComleta = DateFormat('dd-MM-yyy-HH-mm-ss');
 
 double RetornaAlturaTela(BuildContext context) {
@@ -34,6 +35,16 @@ String retornaIdade(DateTime data) {
     return '${diferenca.inDays ~/ 30} mêses';
   } else {
     return '${diferenca.inDays ~/ 365} anos';
+  }
+}
+
+String retornaPorte(double peso){
+  if (peso < 15) {
+    return "Pequeno";
+  } else if (peso < 25) {
+    return "Médio";
+  } else {
+    return "Grande";
   }
 }
 

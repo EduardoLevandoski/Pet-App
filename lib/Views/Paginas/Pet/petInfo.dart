@@ -15,7 +15,6 @@ class PaginaPetInfo extends StatefulWidget {
 }
 
 class _PaginaPetInfoState extends State<PaginaPetInfo> with SingleTickerProviderStateMixin {
-
   @override
   void initState() {
     super.initState();
@@ -44,17 +43,17 @@ class _PaginaPetInfoState extends State<PaginaPetInfo> with SingleTickerProvider
             ),
             widget.pet.imgUrl != null
                 ? Image.network(
-              widget.pet.imgUrl!,
-              width: double.infinity,
-              height: RetornaAlturaTela(context) / 1.9,
-              fit: BoxFit.cover,
-            )
+                    widget.pet.imgUrl!,
+                    width: double.infinity,
+                    height: RetornaAlturaTela(context) / 1.9,
+                    fit: BoxFit.cover,
+                  )
                 : Container(
-                width: double.infinity,
-                height: RetornaAlturaTela(context) / 1.9,
-                color: corCinza,
-                child: const Center(
-                    child: Icon(
+                    width: double.infinity,
+                    height: RetornaAlturaTela(context) / 1.9,
+                    color: corCinza,
+                    child: const Center(
+                        child: Icon(
                       Icons.photo,
                       size: 35,
                       color: Colors.grey,
@@ -110,8 +109,12 @@ class _PaginaPetInfoState extends State<PaginaPetInfo> with SingleTickerProvider
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(child: ColunaConteudo(sTitulo: "Espécie", sDescricao: widget.pet.especie)),
-                              Expanded(flex: 2, child: ColunaConteudo(sTitulo: "Peso", sDescricao: widget.pet.peso)),
-                              Expanded(child: ColunaConteudo(sTitulo: "Cor", sDescricao: widget.pet.cor)),
+                              Expanded(
+                                  flex: 2, child: ColunaConteudo(sTitulo: "Peso", sDescricao: widget.pet.peso.toString())),
+                              Expanded(
+                                  child: ColunaConteudo(
+                                      sTitulo: "Porte",
+                                      sDescricao: widget.pet.peso != null ? retornaPorte(widget.pet.peso!) : null)),
                             ],
                           ),
                         ],
@@ -175,9 +178,7 @@ Widget ColunaConteudo({required String sTitulo, String? sDescricao}) {
   return Column(
     children: [
       Text(sTitulo, style: const TextStyle(fontSize: 18.0)),
-      Text(sDescricao ?? "-", style: const TextStyle(color: Colors.grey),
-          textAlign: TextAlign.center,
-          maxLines: 2),
+      Text(sDescricao ?? "-", style: const TextStyle(color: Colors.grey), textAlign: TextAlign.center, maxLines: 2),
     ],
   );
 }

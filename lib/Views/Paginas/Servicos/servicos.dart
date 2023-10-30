@@ -15,8 +15,8 @@ class _PaginaServicosState extends State<PaginaServicos> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(),
+    return const Scaffold(
+      body: Center(child: Text("Nenhuma empresa encontrada.")),
     );
   }
 }

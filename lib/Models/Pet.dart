@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Pet {
+  int? id;
   String? uid;
   String? nome;
   DateTime? idade;
   String? sexo;
   String? especie;
   String? raca;
-  String? peso;
-  String? cor;
+  double? peso;
   String? imgNome;
   String? imgUrl;
 
   Pet({
+    this.id,
     this.uid,
     this.nome,
     this.idade,
@@ -20,13 +21,13 @@ class Pet {
     this.especie,
     this.raca,
     this.peso,
-    this.cor,
     this.imgNome,
     this.imgUrl,
   });
 
   factory Pet.fromJson(Map<String, dynamic> json) {
     return Pet(
+      id: json["id"],
       uid: json["uid"],
       nome: json["nome"],
       idade: json["idade"],
@@ -34,13 +35,13 @@ class Pet {
       especie: json["especie"],
       raca: json["raca"],
       peso: json["peso"],
-      cor: json["cor"],
       imgNome: json["imgNome"],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      "id": id,
       "uid": uid,
       "nome": nome,
       "idade": idade,
@@ -48,7 +49,6 @@ class Pet {
       "especie": especie,
       "raca": raca,
       "peso": peso,
-      "cor": cor,
       "imgNome": imgNome,
     };
   }
@@ -57,6 +57,7 @@ class Pet {
     final data = document.data()!;
 
     return Pet(
+      id: data["id"],
       uid: data["uid"],
       nome: data["nome"],
       idade: data["idade"]?.toDate(),
@@ -64,7 +65,6 @@ class Pet {
       especie: data["especie"],
       raca: data["raca"],
       peso: data["peso"],
-      cor: data["cor"],
       imgNome: data["imgNome"],
     );
   }

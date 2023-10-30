@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Models/Pet.dart';
-import 'package:pet_app/Views/Paginas/Pet/petAtendimento.dart';
-import 'package:pet_app/Views/Paginas/Pet/petCarteira.dart';
+import 'package:pet_app/Views/Paginas/Pet/petAtendimentos.dart';
+import 'package:pet_app/Views/Paginas/Pet/petParasitas.dart';
 import 'package:pet_app/Views/Paginas/Pet/petInfo.dart';
 import 'package:pet_app/Views/Paginas/Pet/petVacinas.dart';
 
@@ -57,8 +57,8 @@ class _PaginaPetState extends State<PaginaPet> with SingleTickerProviderStateMix
           body: TabBarView(
             children: [
               PaginaPetInfo(pet: widget.pet),
-              PaginaPetVacinas(),
-              PaginaPetCarteira(),
+              PaginaPetVacinas(pet: widget.pet),
+              PaginaPetParasitas(pet: widget.pet),
               PaginaPetAtendimento(),
             ],
           ),

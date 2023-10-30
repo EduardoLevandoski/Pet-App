@@ -7,6 +7,7 @@ import 'package:pet_app/Services/auth_service.dart';
 import 'package:pet_app/Services/storage_service.dart';
 import 'package:pet_app/Utils/util.dart';
 import 'package:pet_app/Utils/util_bottomNavigationBar.dart';
+import 'package:pet_app/Utils/util_constantes.dart';
 import 'package:pet_app/ViewModels/PetCRUD.dart';
 import 'package:pet_app/ViewModels/constantesFB.dart';
 
@@ -30,16 +31,10 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
   final TextEditingController _controladoraTutor = TextEditingController();
   final TextEditingController _controladoraFotoNome = TextEditingController();
 
-  List<String> listaSexo = ["Macho", "Fêmea"];
-  List<String> listaEspecie = ["Cachorro", "Gato"];
-  List<String> listaRaca = ["Vira-lata", "Poddle", "Scottish-Fold"];
-  List<String> listaCor = ["Preto", "Branco"];
-
   DateTime? data;
   String? sexo;
   String? especie;
   String? raca;
-  String? cor;
 
   String? filePath;
   String? fileNome;
@@ -55,12 +50,12 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
   SetaValores() {
     _controladoraNome.text = widget.pet?.nome ?? "";
     _controladoraIdade.text = widget.pet?.idade != null ? formataData.format(widget.pet!.idade!) : "";
-    _controladoraPeso.text = widget.pet?.peso ?? "";
+    _controladoraPeso.text = widget.pet?.peso.toString() ?? "";
 
     sexo = widget.pet?.sexo;
     especie = widget.pet?.especie;
     raca = widget.pet?.raca;
-    cor = widget.pet?.cor;
+    data = widget.pet?.idade;
   }
 
   @override
@@ -121,7 +116,7 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
                       Expanded(child: DropdownSexo()),
                     ],
                   ),
-                  DropdownCor(),
+                  const SizedBox(height: 5),
                   const Divider(height: 25),
                   CampoFoto(),
                   const SizedBox(height: 10),
@@ -358,46 +353,6 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
     );
   }
 
-  Widget DropdownCor() {
-    return Column(
-      children: [
-        const SizedBox(height: 20),
-        DropdownButtonFormField(
-            value: cor,
-            focusNode: FocusNode(canRequestFocus: false),
-            decoration: InputDecoration(
-              labelText: "Cor",
-              suffixIcon: cor != null
-                  ? IconButton(
-                      onPressed: () {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        setState(() {
-                          cor = null;
-                        });
-                      },
-                      icon: const Icon(Icons.clear))
-                  : null,
-              focusColor: Colors.black.withOpacity(0.5),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black.withOpacity(0.5)),
-              ),
-            ),
-            items: listaCor.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            onChanged: (String? value) {
-              setState(() {
-                FocusScope.of(context).requestFocus(FocusNode());
-                cor = value!;
-              });
-            }),
-      ],
-    );
-  }
-
   void cadastrarPet() async {
     try {
       GetAlertaSimOuNao(
@@ -420,18 +375,34 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
                 await _storage.enviaArquivo(filePath: filePath!, fileNome: fileStorage, nomeStorageFB: NomesStorageFB.pets);
               }
 
-              _pet.criaPetFB(
-                  pet: Pet(
-                uid: user.uid,
-                nome: _controladoraNome.text,
-                idade: data,
-                sexo: sexo,
-                especie: especie,
-                raca: raca,
-                peso: _controladoraPeso.text.isNotEmpty ? _controladoraPeso.text : null,
-                cor: cor,
-                imgNome: fileStorage,
-              ));
+              if (widget.pet != null) {
+                _pet.editaPet(
+                    id: widget.pet!.id!,
+                    pet: Pet(
+                      id: DateTime.now().millisecondsSinceEpoch,
+                      uid: user.uid,
+                      nome: _controladoraNome.text,
+                      idade: data,
+                      sexo: sexo,
+                      especie: especie,
+                      raca: raca,
+                      peso: _controladoraPeso.text.isNotEmpty ? double.tryParse(_controladoraPeso.text) : null,
+                      imgNome: fileStorage,
+                    ));
+              } else {
+                _pet.criaPetFB(
+                    pet: Pet(
+                  id: DateTime.now().millisecondsSinceEpoch,
+                  uid: user.uid,
+                  nome: _controladoraNome.text,
+                  idade: data,
+                  sexo: sexo,
+                  especie: especie,
+                  raca: raca,
+                  peso: _controladoraPeso.text.isNotEmpty ? double.tryParse(_controladoraPeso.text) : null,
+                  imgNome: fileStorage,
+                ));
+              }
 
               Get.offAll(() => utilBottomNavigationBar());
               setState(() {

@@ -9,7 +9,7 @@ class UsuarioFB extends GetxController {
 
   Future<void> criaUsuarioFB({required Usuario usuario}) async {
     try {
-      await _db.collection(DocumentosFB.usuarios).add(usuario.toJson());
+      await _db.collection(ColecoesFB.usuarios).add(usuario.toJson());
     } catch (e) {
       rethrow;
     }
@@ -17,7 +17,7 @@ class UsuarioFB extends GetxController {
 
   Future<void> editaUsuarioFB({required String uidUsuario, String? novoNome, String? novoImgNome}) async {
     try {
-      final query = await _db.collection(DocumentosFB.usuarios).where("uid", isEqualTo: uidUsuario).get();
+      final query = await _db.collection(ColecoesFB.usuarios).where("uid", isEqualTo: uidUsuario).get();
 
       if (query.docs.isNotEmpty) {
         await query.docs.first.reference.update({
@@ -34,7 +34,7 @@ class UsuarioFB extends GetxController {
 
   Future<Usuario?> buscaUsuarioPorIdFB({required String idUsuario}) async {
     try {
-      final snapshot = await _db.collection(DocumentosFB.usuarios).where("uid", isEqualTo: idUsuario).get();
+      final snapshot = await _db.collection(ColecoesFB.usuarios).where("uid", isEqualTo: idUsuario).get();
       return snapshot.docs.map((e) => Usuario.fromSnapshot(e)).singleOrNull;
     } catch (e) {
       rethrow;

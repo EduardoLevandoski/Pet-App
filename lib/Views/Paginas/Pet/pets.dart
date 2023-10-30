@@ -41,7 +41,9 @@ class _PaginaPetsState extends State<PaginaPets> with SingleTickerProviderStateM
     User? user = await _auth.getUsuarioAtual();
 
     if (user != null) {
-      listaPets = await _pet.buscaPetsPorUIDFB(idUsuario: user.uid);
+      await Future.delayed(const Duration(milliseconds: 500), () async {
+        listaPets = await _pet.buscaPetsPorUIDFB(idUsuario: user.uid);
+      });
 
       for (Pet pet in listaPets) {
         if (pet.imgNome != null) {

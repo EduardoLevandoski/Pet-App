@@ -1,46 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Models/Pet.dart';
-import 'package:pet_app/Models/PetVacina.dart';
+import 'package:pet_app/Models/PetParasitas.dart';
 import 'package:pet_app/Utils/util.dart';
-import 'package:pet_app/ViewModels/PetVacinaCRUD.dart';
+import 'package:pet_app/ViewModels/PetParasitasCRUD.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class PaginaPetVacinas extends StatefulWidget {
+class PaginaPetParasitas extends StatefulWidget {
   Pet pet;
-
-  PaginaPetVacinas({super.key, required this.pet});
+  PaginaPetParasitas({super.key, required this.pet});
 
   @override
-  State<PaginaPetVacinas> createState() => _PaginaPetVacinasState();
+  State<PaginaPetParasitas> createState() => _PaginaPetParasitasState();
 }
 
-class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerProviderStateMixin {
-  final PetVacinaFB _vacinaPet = Get.put(PetVacinaFB());
+class _PaginaPetParasitasState extends State<PaginaPetParasitas> with SingleTickerProviderStateMixin {
+  final PetParasitaFB _vacinaPet = Get.put(PetParasitaFB());
 
-  List<PetVacina> listaPetVacinas = [];
+  List<PetParasita> listaPetParasitas = [];
   bool bCarregando = false;
 
   @override
   void initState() {
     super.initState();
-    CarregaVacinas();
+    CarregaParasitas();
   }
 
-  CarregaVacinas() async {
+  CarregaParasitas() async {
     setState(() {
       bCarregando = true;
     });
 
-    listaPetVacinas = await _vacinaPet.buscaPetsVacinasFB(idPet: widget.pet.id!);
+    listaPetParasitas = await _vacinaPet.buscaPetsParasitasFB(idPet: widget.pet.id!);
 
-    List<PetVacina> concludedFalse = listaPetVacinas.where((vacina) => vacina.concluida == false).toList();
-    List<PetVacina> concludedTrue = listaPetVacinas.where((vacina) => vacina.concluida == true).toList();
+    List<PetParasita> concludedFalse = listaPetParasitas.where((vacina) => vacina.concluida == false).toList();
+    List<PetParasita> concludedTrue = listaPetParasitas.where((vacina) => vacina.concluida == true).toList();
 
     concludedFalse.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0))); // Most recent first
     concludedTrue.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0))); // Most recent first
 
-    listaPetVacinas = concludedFalse + concludedTrue;
+    listaPetParasitas = concludedFalse + concludedTrue;
 
     setState(() {
       bCarregando = false;
@@ -52,25 +51,24 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
     return Scaffold(
       body: bCarregando
           ? ListView.builder(
-              itemCount: 3,
-              padding: const EdgeInsets.only(bottom: 80),
-              itemBuilder: (context, index) {
-                return CardSkeleton();
-              },
-            )
-          : listaPetVacinas.isNotEmpty
-              ? ListView.builder(
-                  itemCount: listaPetVacinas.length,
-                  padding: const EdgeInsets.only(bottom: 80),
-                  itemBuilder: (context, index) {
-                    return CardVacina(index);
-                  },
-                )
-              : const Center(child: Text("Nenhuma vacina encontrada.")),
+        itemCount: 3,
+        padding: const EdgeInsets.only(bottom: 80),
+        itemBuilder: (context, index) {
+          return CardSkeleton();
+        },
+      )
+          : listaPetParasitas.isNotEmpty
+          ? ListView.builder(
+        itemCount: listaPetParasitas.length,
+        padding: const EdgeInsets.only(bottom: 80),
+        itemBuilder: (context, index) {
+          return CardParasita(index);
+        },
+      ): const Center(child: Text("Nenhuma medicação encontrada.")),
     );
   }
 
-  Widget CardVacina(int index) {
+  Widget CardParasita(int index){
     return Padding(
       padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
       child: Container(
@@ -87,18 +85,18 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
           ],
         ),
         child: IntrinsicHeight(
-          child: Row(
+          child:  Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                flex: 2,
+                flex: 4,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Vacina"),
+                    const Text("Medicação"),
                     Text(
-                        listaPetVacinas[index].vacina
+                        listaPetParasitas[index].medicamento
                             ?? "-",
                         style: const TextStyle(fontWeight: FontWeight.w600)),
                   ],
@@ -106,6 +104,7 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
               ),
               const VerticalDivider(),
               Expanded(
+                flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -113,19 +112,32 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text("Status"),
-                        Text(listaPetVacinas[index].concluida ?? false ? "Concluida" : "Em andamento",
+                        Text(listaPetParasitas[index].concluida ?? false ? "Concluida" : "Em andamento",
                             style: TextStyle(
-                                color: listaPetVacinas[index].concluida ?? false ? Colors.greenAccent : Colors.orangeAccent)),
+                                color: listaPetParasitas[index].concluida ?? false ? Colors.greenAccent : Colors.orangeAccent)),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text("Data"),
-                        Text(listaPetVacinas[index].data != null
-                            ? formataDataCurta.format(listaPetVacinas[index].data!)
-                            : "__/__/__"),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Data"),
+                            Text(listaPetParasitas[index].data != null
+                                ? formataDataCurta.format(listaPetParasitas[index].data!)
+                                : "__/__/__"),
+                          ],
+                        ),
+                        const SizedBox(width: 15),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Peso"),
+                            Text(listaPetParasitas[index].peso != null ? "${listaPetParasitas[index].peso} Kg" : "-"),
+                          ],
+                        ),
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -133,8 +145,8 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text("Repetir em"),
-                        Text(listaPetVacinas[index].dataRepetir != null
-                            ? formataDataCurta.format(listaPetVacinas[index].dataRepetir!)
+                        Text(listaPetParasitas[index].dataRepetir != null
+                            ? formataDataCurta.format(listaPetParasitas[index].dataRepetir!)
                             : "__/__/__"),
                       ],
                     ),
@@ -148,7 +160,7 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
     );
   }
 
-  Widget CardSkeleton() {
+  Widget CardSkeleton(){
     return Skeletonizer(
       enabled: true,
       child: Padding(
@@ -166,17 +178,17 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
               ),
             ],
           ),
-          child: const IntrinsicHeight(
-            child: Row(
+          child:const IntrinsicHeight(
+            child:  Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Vacina"),
+                      Text("Medicação"),
                       Text("----------------------------------------------------"),
                       Text("----------------------------------------------------"),
                       Text("-------------------------------------------"),
@@ -185,6 +197,7 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
                 ),
                 VerticalDivider(),
                 Expanded(
+                  flex: 3,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -192,15 +205,28 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Status"),
-                          Text("Em andamento", style: TextStyle(color: Colors.orangeAccent)),
+                          Text("Concluído", style: TextStyle(color: Colors.greenAccent)),
                         ],
                       ),
                       SizedBox(height: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Data"),
-                          Text("__/__/__"),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Data"),
+                              Text("__/__/__"),
+                            ],
+                          ),
+                          SizedBox(width: 15),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Peso"),
+                              Text("-"),
+                            ],
+                          ),
                         ],
                       ),
                       SizedBox(height: 10),
