@@ -8,6 +8,9 @@ class PaginaPetAtendimento extends StatefulWidget {
 }
 
 class _PaginaPetAtendimentoState extends State<PaginaPetAtendimento> with SingleTickerProviderStateMixin {
+
+  List<int> listaPetAtendimentos = [];
+
   @override
   void initState() {
     super.initState();
@@ -16,8 +19,8 @@ class _PaginaPetAtendimentoState extends State<PaginaPetAtendimento> with Single
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: 3,
+      body: listaPetAtendimentos.isNotEmpty ? ListView.builder(
+        itemCount: 0,
         padding: const EdgeInsets.only(bottom: 80),
         itemBuilder: (context, index) {
           return Padding(
@@ -93,7 +96,7 @@ class _PaginaPetAtendimentoState extends State<PaginaPetAtendimento> with Single
             ),
           );
         },
-      ),
+      ) : const Center(child: Text("Nenhum atendimento encontrado.")),
     );
   }
 }

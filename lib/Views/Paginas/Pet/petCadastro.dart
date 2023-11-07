@@ -51,6 +51,7 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
     _controladoraNome.text = widget.pet?.nome ?? "";
     _controladoraIdade.text = widget.pet?.idade != null ? formataData.format(widget.pet!.idade!) : "";
     _controladoraPeso.text = widget.pet?.peso.toString() ?? "";
+    _controladoraFotoNome.text = widget.pet?.imgNome ?? "";
 
     sexo = widget.pet?.sexo;
     especie = widget.pet?.especie;
@@ -373,6 +374,8 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
                 fileStorage = "${formataDataComleta.format(DateTime.now())}_${fileNome!}";
 
                 await _storage.enviaArquivo(filePath: filePath!, fileNome: fileStorage, nomeStorageFB: NomesStorageFB.pets);
+              } else if (widget.pet?.imgNome != null && widget.pet?.imgUrl != null) {
+                await _storage.editaAqruivo(fileUrl: widget.pet!.imgUrl!, fileNome: widget.pet!.imgNome!, nomeStorageFB: NomesStorageFB.pets);
               }
 
               if (widget.pet != null) {
@@ -387,7 +390,7 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
                       especie: especie,
                       raca: raca,
                       peso: _controladoraPeso.text.isNotEmpty ? double.tryParse(_controladoraPeso.text) : null,
-                      imgNome: fileStorage,
+                      imgNome: widget.pet!.imgNome,
                     ));
               } else {
                 _pet.criaPetFB(
@@ -416,10 +419,10 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
             Get.back();
           });
     } catch (e) {
+      Get.snackbar("Erro", e.toString(), backgroundColor: Colors.redAccent, colorText: Colors.white);
       setState(() {
         bCarregando = false;
       });
-      Get.snackbar("Erro", e.toString(), backgroundColor: Colors.redAccent, colorText: Colors.white);
     }
   }
 }
