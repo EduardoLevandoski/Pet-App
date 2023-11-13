@@ -15,15 +15,24 @@ class PetFB extends GetxController {
     }
   }
 
+  Future<Pet>buscaPetPorID({required int id}) async {
+    try {
+      final snapshot = await _db.collection(ColecoesFB.pets).where("id", isEqualTo: id).get();
+      return snapshot.docs.map((e) => Pet.fromSnapshot(e)).toList().first;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> editaPet({required int id, required Pet pet}) async {
     try {
-      final query = await _db
+      final snapshot = await _db
           .collection(ColecoesFB.pets)
           .where("id", isEqualTo: id)
           .get();
 
-      if (query.docs.isNotEmpty) {
-        await query.docs.first.reference.update(pet.toJson());
+      if (snapshot.docs.isNotEmpty) {
+        await snapshot.docs.first.reference.update(pet.toJson());
       } else {
         throw Exception("Não foi possivel encontrar o pet");
       }
@@ -32,10 +41,27 @@ class PetFB extends GetxController {
     }
   }
 
-  Future<List<Pet>> buscaPetsPorUIDFB({required String idUsuario}) async {
+  Future<List<Pet>>buscaPetsPorUIDFB({required String idUsuario}) async {
     try {
       final snapshot = await _db.collection(ColecoesFB.pets).where("uid", isEqualTo: idUsuario).get();
       return snapshot.docs.map((e) => Pet.fromSnapshot(e)).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> removePet({required int id}) async {
+    try {
+      final snapshot = await _db
+          .collection(ColecoesFB.pets)
+          .where("id", isEqualTo: id)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        await snapshot.docs.first.reference.delete();
+      } else {
+        throw Exception("Não foi possivel encontrar o pet");
+      }
     } catch (e) {
       rethrow;
     }

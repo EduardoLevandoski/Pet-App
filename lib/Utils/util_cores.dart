@@ -6,6 +6,7 @@ Color corPrimaria = const Color(0xff444C5E);
 Color corSecundaria = const Color(0xff59C5C5);
 
 //Cores customizadas
+Color corBranca = const Color(0xffEEF2F8);
 Color corCinza = const Color(0xFFD1D1D1);
 
 ThemeData temaPrincipal = ThemeData(
@@ -69,6 +70,19 @@ ThemeData temaPrincipal = ThemeData(
     labelColor: corSecundaria,
     indicatorColor: corSecundaria,
     unselectedLabelColor: Colors.white,
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      padding: MaterialStateProperty.all(EdgeInsets.zero),
+      overlayColor: MaterialStateProperty.all(Colors.transparent),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    ),
+  ),
+  dialogTheme: const DialogTheme(
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(3.0)),
+    ),
   ),
   useMaterial3: true,
 );

@@ -76,7 +76,8 @@ class _PaginaAlterarSenhaState extends State<PaginaAlterarSenha> with SingleTick
     });
 
     try {
-      GetAlertaSimOuNao(
+      AlertaSimOuNao(
+          context: context,
           sTitulo: "Atenção",
           sConteudo:
               "Tem certeza que deseja alterar a sua senha? \n\n Será enviado ao seu email uma solicitação para alteração da senha",

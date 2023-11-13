@@ -39,7 +39,7 @@ class _PaginaPetInfoState extends State<PaginaPetInfo> with SingleTickerProvider
           clipBehavior: Clip.none,
           children: [
             Container(
-              height: RetornaAlturaTela(context) * 1.1,
+              height: RetornaAlturaTela(context) * 0.8,
             ),
             widget.pet.imgUrl != null
                 ? Image.network(
@@ -59,7 +59,7 @@ class _PaginaPetInfoState extends State<PaginaPetInfo> with SingleTickerProvider
                       color: Colors.grey,
                     ))),
             Positioned(
-              top: RetornaAlturaTela(context) / 2.2,
+              top: RetornaAlturaTela(context) / 2.1,
               left: 20,
               right: 20,
               child: Column(
@@ -110,7 +110,10 @@ class _PaginaPetInfoState extends State<PaginaPetInfo> with SingleTickerProvider
                             children: [
                               Expanded(child: ColunaConteudo(sTitulo: "Espécie", sDescricao: widget.pet.especie)),
                               Expanded(
-                                  flex: 2, child: ColunaConteudo(sTitulo: "Peso", sDescricao: widget.pet.peso.toString())),
+                                  flex: 2,
+                                  child: ColunaConteudo(
+                                      sTitulo: "Peso",
+                                      sDescricao: widget.pet.peso != null ? ("${widget.pet.peso} Kg") : "-")),
                               Expanded(
                                   child: ColunaConteudo(
                                       sTitulo: "Porte",
@@ -121,42 +124,9 @@ class _PaginaPetInfoState extends State<PaginaPetInfo> with SingleTickerProvider
                       ),
                     ),
                   ),
-                  const SizedBox(height: 15),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          spreadRadius: 1,
-                          blurRadius: 7, // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(22.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          LinhaConteudo(sTitulo: "Endereço", sDescricao: null),
-                          const Divider(),
-                          LinhaConteudo(sTitulo: "Cidade", sDescricao: null),
-                          const Divider(),
-                          LinhaConteudo(sTitulo: "Estado", sDescricao: null),
-                          const Divider(),
-                          LinhaConteudo(sTitulo: "Telefone", sDescricao: null),
-                          const Divider(),
-                          LinhaConteudo(sTitulo: "Celular", sDescricao: null),
-                          const Divider(),
-                        ],
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
-            const SizedBox(height: 80),
           ],
         ),
       ),

@@ -26,6 +26,7 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
   final PetFB _pet = Get.put(PetFB());
 
   final TextEditingController _controladoraNome = TextEditingController();
+  final TextEditingController _controladoraRaca = TextEditingController();
   final TextEditingController _controladoraIdade = TextEditingController();
   final TextEditingController _controladoraPeso = TextEditingController();
   final TextEditingController _controladoraTutor = TextEditingController();
@@ -49,8 +50,9 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
 
   SetaValores() {
     _controladoraNome.text = widget.pet?.nome ?? "";
+    _controladoraRaca.text = widget.pet?.raca ?? "";
     _controladoraIdade.text = widget.pet?.idade != null ? formataData.format(widget.pet!.idade!) : "";
-    _controladoraPeso.text = widget.pet?.peso.toString() ?? "";
+    _controladoraPeso.text = (widget.pet?.peso != null ? widget.pet?.peso.toString() : "")!;
     _controladoraFotoNome.text = widget.pet?.imgNome ?? "";
 
     sexo = widget.pet?.sexo;
@@ -62,6 +64,7 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
   @override
   void dispose() {
     _controladoraNome.dispose();
+    _controladoraRaca.dispose();
     _controladoraIdade.dispose();
     _controladoraPeso.dispose();
     _controladoraTutor.dispose();
@@ -91,7 +94,7 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(3.0),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.3),
@@ -108,7 +111,7 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
                   const Text("Digite os dados do seu Pet", style: TextStyle(fontSize: 22.0)),
                   CampoTextField(sLabel: "Nome", controladora: _controladoraNome),
                   DropdownEspecie(),
-                  DropdownRaca(),
+                  CampoTextField(sLabel: "Raça", controladora: _controladoraRaca),
                   CampoData(sLabel: "Data/Ano de Nascimento", controladora: _controladoraIdade),
                   Row(
                     children: [
@@ -314,49 +317,10 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
     );
   }
 
-  Widget DropdownRaca() {
-    return Column(
-      children: [
-        const SizedBox(height: 20),
-        DropdownButtonFormField(
-            value: raca,
-            focusNode: FocusNode(canRequestFocus: false),
-            decoration: InputDecoration(
-              labelText: "Raça",
-              suffixIcon: raca != null
-                  ? IconButton(
-                      onPressed: () {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        setState(() {
-                          raca = null;
-                        });
-                      },
-                      icon: const Icon(Icons.clear))
-                  : null,
-              focusColor: Colors.black.withOpacity(0.5),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black.withOpacity(0.5)),
-              ),
-            ),
-            items: listaRaca.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            onChanged: (String? value) {
-              setState(() {
-                FocusScope.of(context).requestFocus(FocusNode());
-                raca = value!;
-              });
-            }),
-      ],
-    );
-  }
-
   void cadastrarPet() async {
     try {
-      GetAlertaSimOuNao(
+      AlertaSimOuNao(
+          context: context,
           sTitulo: "Confirmar",
           sConteudo: "Deseja realizar o cadastro do pet?",
           onPressedSim: () async {
@@ -373,16 +337,24 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
               if (filePath != null && fileNome != null) {
                 fileStorage = "${formataDataComleta.format(DateTime.now())}_${fileNome!}";
 
-                await _storage.enviaArquivo(filePath: filePath!, fileNome: fileStorage, nomeStorageFB: NomesStorageFB.pets);
+                if (widget.pet?.imgNome != null && widget.pet?.imgUrl != null) {
+                  await _storage.editaArquivo(
+                      filePath: filePath!, fileNome: widget.pet!.imgNome!, nomeStorageFB: NomesStorageFB.pets);
+                } else {
+                  await _storage.enviaArquivo(
+                      filePath: filePath!, fileNome: fileStorage, nomeStorageFB: NomesStorageFB.pets);
+                }
+
               } else if (widget.pet?.imgNome != null && widget.pet?.imgUrl != null) {
-                await _storage.editaAqruivo(fileUrl: widget.pet!.imgUrl!, fileNome: widget.pet!.imgNome!, nomeStorageFB: NomesStorageFB.pets);
+                await _storage.buscaArquivo(
+                    fileUrl: widget.pet!.imgUrl!, fileNome: widget.pet!.imgNome!, nomeStorageFB: NomesStorageFB.pets);
               }
 
               if (widget.pet != null) {
                 _pet.editaPet(
                     id: widget.pet!.id!,
                     pet: Pet(
-                      id: DateTime.now().millisecondsSinceEpoch,
+                      id: widget.pet!.id!,
                       uid: user.uid,
                       nome: _controladoraNome.text,
                       idade: data,
@@ -390,7 +362,7 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
                       especie: especie,
                       raca: raca,
                       peso: _controladoraPeso.text.isNotEmpty ? double.tryParse(_controladoraPeso.text) : null,
-                      imgNome: widget.pet!.imgNome,
+                      imgNome: widget.pet!.imgNome ?? fileStorage,
                     ));
               } else {
                 _pet.criaPetFB(

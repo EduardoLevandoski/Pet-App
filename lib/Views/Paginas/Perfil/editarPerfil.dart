@@ -42,7 +42,8 @@ class _PaginaEditarPerfilState extends State<PaginaEditarPerfil> with SingleTick
     _controladoraNome.text = widget.usuario.nome!;
 
     if (widget.usuario.imgNome != null) {
-      widget.usuario.imgUrl = await _storage.downloadURL(fileNome: widget.usuario.imgNome!, nomeStorageFB: NomesStorageFB.usuarios);
+      widget.usuario.imgUrl =
+          await _storage.downloadURL(fileNome: widget.usuario.imgNome!, nomeStorageFB: NomesStorageFB.usuarios);
     }
   }
 
@@ -130,7 +131,10 @@ class _PaginaEditarPerfilState extends State<PaginaEditarPerfil> with SingleTick
                         child: Container(
                           width: 35,
                           height: 35,
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: corPrimaria),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: corPrimaria,
+                          ),
                           child: IconButton(
                             onPressed: () async {
                               final pick = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 30);
@@ -207,7 +211,8 @@ class _PaginaEditarPerfilState extends State<PaginaEditarPerfil> with SingleTick
     print(_controladoraNome.text);
 
     try {
-      GetAlertaSimOuNao(
+      AlertaSimOuNao(
+          context: context,
           sTitulo: "Atenção",
           sConteudo: "Tem certeza que deseja editar seu perfil?",
           onPressedSim: () async {
@@ -216,17 +221,27 @@ class _PaginaEditarPerfilState extends State<PaginaEditarPerfil> with SingleTick
               bCarregando = true;
             });
 
-            String? fileStorage;
+            String? fileStorage = widget.usuario.imgNome;
 
             if (filePath != null && fileNome != null) {
-              fileStorage = "${formataDataComleta.format(DateTime.now())}_${fileNome!}";
+              if (widget.usuario.imgNome != null) {
+                fileStorage = widget.usuario.imgNome!;
 
-              await _storage.enviaArquivo(
-                  filePath: filePath!, fileNome: fileStorage, nomeStorageFB: NomesStorageFB.usuarios);
+                await _storage.editaArquivo(
+                    filePath: filePath!, fileNome: fileStorage, nomeStorageFB: NomesStorageFB.usuarios);
+              } else {
+                fileStorage = "${formataDataComleta.format(DateTime.now())}_${fileNome!}";
+
+                await _storage.enviaArquivo(
+                    filePath: filePath!, fileNome: fileStorage, nomeStorageFB: NomesStorageFB.usuarios);
+              }
+
+              await _usuarioFB.editaUsuarioFB(
+                  uidUsuario: widget.usuario.uid!, novoNome: widget.usuario.nome!, novoImgNome: fileStorage);
             }
 
             await _usuarioFB.editaUsuarioFB(
-                uidUsuario: widget.usuario.uid!, novoNome: _controladoraNome.text, novoImgNome: fileStorage ?? widget.usuario.imgNome);
+                uidUsuario: widget.usuario.uid!, novoNome: _controladoraNome.text, novoImgNome: fileStorage);
             Get.back(canPop: true);
 
             setState(() {

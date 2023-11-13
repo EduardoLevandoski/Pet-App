@@ -29,7 +29,7 @@ class _PaginaPetAtendimentoState extends State<PaginaPetAtendimento> with Single
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(3.0),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.3),

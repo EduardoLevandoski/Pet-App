@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Models/Pet.dart';
+import 'package:pet_app/Utils/util.dart';
+import 'package:pet_app/Utils/util_bottomNavigationBar.dart';
+import 'package:pet_app/ViewModels/AgendamentoCRUD.dart';
+import 'package:pet_app/ViewModels/PetCRUD.dart';
 import 'package:pet_app/Views/Paginas/Pet/petAtendimentos.dart';
 import 'package:pet_app/Views/Paginas/Pet/petParasitas.dart';
 import 'package:pet_app/Views/Paginas/Pet/petInfo.dart';
@@ -16,6 +20,8 @@ class PaginaPet extends StatefulWidget {
 }
 
 class _PaginaPetState extends State<PaginaPet> with SingleTickerProviderStateMixin {
+  final AgendamentoFB _agendamento = Get.put(AgendamentoFB());
+  final PetFB _pet = Get.put(PetFB());
   bool bPetEditado = false;
 
   List<Tab> listaAbas = [
@@ -48,6 +54,27 @@ class _PaginaPetState extends State<PaginaPet> with SingleTickerProviderStateMix
                   Get.back();
                 },
               ),
+              actions: [IconButton(onPressed: () {
+                try {
+                  AlertaSimOuNao(
+                      context: context,
+                      sTitulo: "Atenção",
+                      sConteudo:
+                      "Tem certeza que deseja remover o pet?",
+                      onPressedSim: () async {
+
+                        _agendamento.removeAgendamentoPet(petId: widget.pet.id!);
+                        _pet.removePet(id: widget.pet.id!);
+
+                        Get.offAll(() => utilBottomNavigationBar());
+                      },
+                      onPressedNao: () {
+                        Get.back();
+                      });
+                } catch (e) {
+                  Get.snackbar("Erro", e.toString(), backgroundColor: Colors.redAccent, colorText: Colors.white);
+                }
+              }, icon: const Icon(Icons.delete))],
               bottom: TabBar(
                 isScrollable: true,
                 dividerColor: Colors.transparent,

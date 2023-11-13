@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:pet_app/Utils/util_cores.dart';
 import 'package:pet_app/Views/Paginas/Perfil/perfil.dart';
 import 'package:pet_app/Views/Paginas/Pet/pets.dart';
-import 'package:pet_app/Views/Paginas/Servicos/servicos.dart';
+import 'package:pet_app/Views/Paginas/Servicos/clinicas.dart';
 import 'package:pet_app/Views/principal.dart';
 
 import 'util_globals.dart';
@@ -21,7 +21,7 @@ class _utilBottomNavigationBarState extends State<utilBottomNavigationBar> {
   static final List<Widget> _widgetOptions = <Widget>[
     const Principal(),
     const PaginaPets(),
-    const PaginaServicos(),
+    const PaginaClinicas(),
     PaginaPerfil(),
   ];
 
@@ -56,8 +56,8 @@ class _utilBottomNavigationBarState extends State<utilBottomNavigationBar> {
               backgroundColor: corPrimaria,
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.bathtub),
-              label: 'Serviços',
+              icon: const Icon(Icons.store),
+              label: 'Clínicas',
               backgroundColor: corPrimaria,
             ),
             BottomNavigationBarItem(

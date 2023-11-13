@@ -148,10 +148,17 @@ class _PaginaPerfilState extends State<PaginaPerfil> {
                                   String? fileStorage;
 
                                   if (filePath != null && fileNome != null) {
-                                    fileStorage = "${formataDataComleta.format(DateTime.now())}_${fileNome!}";
+                                    if(usuario?.imgNome != null) {
+                                      fileStorage = usuario!.imgNome!;
 
-                                    await _storage.enviaArquivo(
-                                        filePath: filePath!, fileNome: fileStorage, nomeStorageFB: NomesStorageFB.usuarios);
+                                      await _storage.editaArquivo(
+                                          filePath: filePath!, fileNome: fileStorage, nomeStorageFB: NomesStorageFB.usuarios);
+                                    } else {
+                                      fileStorage = "${formataDataComleta.format(DateTime.now())}_${fileNome!}";
+
+                                      await _storage.enviaArquivo(
+                                          filePath: filePath!, fileNome: fileStorage, nomeStorageFB: NomesStorageFB.usuarios);
+                                    }
 
                                     await _usuarioFB.editaUsuarioFB(uidUsuario: usuario!.uid!, novoNome: usuario!.nome!, novoImgNome: fileStorage);
                                   }
@@ -205,8 +212,9 @@ class _PaginaPerfilState extends State<PaginaPerfil> {
                   onPress: bCarregando
                       ? null
                       : () {
-                          GetAlertaSimOuNao(
-                            sTitulo: "Sim",
+                          AlertaSimOuNao(
+                            context: context,
+                            sTitulo: "Atenção",
                             sConteudo: "Tem certeza que deseja sair?",
                             onPressedSim: () {
                               _auth.logout();

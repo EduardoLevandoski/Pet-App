@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/Models/Atendimento.dart';
 import 'package:pet_app/Models/Pet.dart';
-import 'package:pet_app/Models/PetVacina.dart';
 import 'package:pet_app/Utils/util.dart';
-import 'package:pet_app/ViewModels/PetVacinaCRUD.dart';
+import 'package:pet_app/ViewModels/AtendimentoCRUD.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class PaginaPetVacinas extends StatefulWidget {
@@ -16,9 +16,9 @@ class PaginaPetVacinas extends StatefulWidget {
 }
 
 class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerProviderStateMixin {
-  final PetVacinaFB _vacinaPet = Get.put(PetVacinaFB());
+  final AtendimentoFB _atendimento = Get.put(AtendimentoFB());
 
-  List<PetVacina> listaPetVacinas = [];
+  List<Atendimento> listaPetVacinas = [];
   bool bCarregando = false;
 
   @override
@@ -32,10 +32,10 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
       bCarregando = true;
     });
 
-    listaPetVacinas = await _vacinaPet.buscaPetsVacinasFB(idPet: widget.pet.id!);
+    listaPetVacinas = await _atendimento.buscaPetVacinasFB(idPet: widget.pet.id!);
 
-    List<PetVacina> concludedFalse = listaPetVacinas.where((vacina) => vacina.concluida == false).toList();
-    List<PetVacina> concludedTrue = listaPetVacinas.where((vacina) => vacina.concluida == true).toList();
+    List<Atendimento> concludedFalse = listaPetVacinas.where((vacina) => vacina.concluida == false).toList();
+    List<Atendimento> concludedTrue = listaPetVacinas.where((vacina) => vacina.concluida == true).toList();
 
     concludedFalse.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0))); // Most recent first
     concludedTrue.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0))); // Most recent first
@@ -77,7 +77,7 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(3.0),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.3),
@@ -157,7 +157,7 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(3.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.3),

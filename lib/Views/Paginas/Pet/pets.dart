@@ -40,15 +40,13 @@ class _PaginaPetsState extends State<PaginaPets> with SingleTickerProviderStateM
 
     User? user = await _auth.getUsuarioAtual();
 
-    if (user != null) {
-      await Future.delayed(const Duration(milliseconds: 500), () async {
-        listaPets = await _pet.buscaPetsPorUIDFB(idUsuario: user.uid);
-      });
+    await Future.delayed(const Duration(milliseconds: 500), () async {
+      listaPets = await _pet.buscaPetsPorUIDFB(idUsuario: user!.uid);
+    });
 
-      for (Pet pet in listaPets) {
-        if (pet.imgNome != null) {
-          pet.imgUrl = await _storage.downloadURL(fileNome: pet.imgNome!, nomeStorageFB: NomesStorageFB.pets);
-        }
+    for (Pet pet in listaPets) {
+      if (pet.imgNome != null) {
+        pet.imgUrl = await _storage.downloadURL(fileNome: pet.imgNome!, nomeStorageFB: NomesStorageFB.pets);
       }
     }
 
@@ -64,7 +62,7 @@ class _PaginaPetsState extends State<PaginaPets> with SingleTickerProviderStateM
         tooltip: "Cadastrar um pet",
         onPressed: () {
           Get.to(() => PaginaPetCadastro())?.then((value) {
-            if(value ?? false) {
+            if (value ?? false) {
               CarregaPets();
             }
           });
@@ -80,18 +78,20 @@ class _PaginaPetsState extends State<PaginaPets> with SingleTickerProviderStateM
                 return Skeletonizer(
                   enabled: true,
                   effect: ShimmerEffect(baseColor: corCinza),
-                  child: SkeletonCard(),
+                  child: CardSkeleton(),
                 );
               }),
             )
-          : listaPets.isNotEmpty ? GridView.count(
-              crossAxisCount: 2,
-              childAspectRatio: 0.63,
-              padding: const EdgeInsets.fromLTRB(4, 4, 4, 80),
-              children: List.generate(listaPets.length, (index) {
-                return CardPet(pet: listaPets[index]);
-              }),
-            ) : const Center(child: Text("Nenhum pet encontrado.")),
+          : listaPets.isNotEmpty
+              ? GridView.count(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.63,
+                  padding: const EdgeInsets.fromLTRB(4, 4, 4, 80),
+                  children: List.generate(listaPets.length, (index) {
+                    return CardPet(pet: listaPets[index]);
+                  }),
+                )
+              : const Center(child: Text("Nenhum pet encontrado.")),
     );
   }
 
@@ -101,121 +101,125 @@ class _PaginaPetsState extends State<PaginaPets> with SingleTickerProviderStateM
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(3.0),
       ),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 3.0,
       child: InkWell(
         onTap: () {
           Get.to(() => PaginaPet(pet: pet))?.then((value) {
-            if(value ?? false) {
+            if (value ?? false) {
               CarregaPets();
             }
           });
         },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              color: corCinza,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: pet.imgUrl != null
-                    ? Image.network(
-                        pet.imgUrl!,
-                        width: 200,
-                        height: 200,
-                        fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
-                    return Skeletonizer(
-                      enabled: true,
-                      effect: ShimmerEffect(baseColor: corCinza),
-                      child: Skeleton.replace(
-                        width: 200,
-                        height: 200,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
+        child: Ink(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                color: corCinza,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(3.0), topRight: Radius.circular(3.0)),
+                  child: pet.imgUrl != null
+                      ? SizedBox(
                           child: Image.network(
-                            "",
+                            pet.imgUrl!,
                             width: 200,
                             height: 200,
                             fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              }
+                              return Skeletonizer(
+                                enabled: true,
+                                effect: ShimmerEffect(baseColor: corCinza),
+                                child: Skeleton.replace(
+                                  width: 200,
+                                  height: 200,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(3.0), topRight: Radius.circular(3.0)),
+                                    child: Image.network(
+                                      "",
+                                      width: 200,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : Container(
+                          height: 200,
+                          color: corCinza,
+                          child: const Center(
+                              child: Icon(
+                            Icons.photo,
+                            size: 35,
+                            color: Colors.grey,
+                          ))),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(12, 9, 12, 2),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      pet.nome!,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[800],
+                      ),
+                      maxLines: 1,
+                    ),
+                    Text(
+                      pet.raca ?? "-",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    const Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          pet.idade != null ? retornaIdade(pet.idade!) : "-",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
                           ),
                         ),
-                      ),
-                    );
-                  },
-                      )
-                    : Container(
-                        height: 200,
-                        color: corCinza,
-                        child: const Center(
-                            child: Icon(
-                          Icons.photo,
-                          size: 35,
-                          color: Colors.grey,
-                        ))),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(12, 9, 12, 2),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    pet.nome!,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[800],
-                    ),
-                    maxLines: 1,
-                  ),
-                  Text(
-                    pet.raca ?? "-",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  const Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        pet.idade != null ? retornaIdade(pet.idade!) : "-",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
+                        Text(
+                          pet.sexo ?? "-",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
                         ),
-                      ),
-                      Text(
-                        pet.sexo ?? "-",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  )
-                  //const Divider(),
-                ],
+                      ],
+                    )
+                    //const Divider(),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-
-  Widget SkeletonCard() {
+  Widget CardSkeleton() {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(3.0),
       ),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 3.0,
@@ -226,7 +230,7 @@ class _PaginaPetsState extends State<PaginaPets> with SingleTickerProviderStateM
             width: 200,
             height: 200,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: const BorderRadius.only(topLeft: Radius.circular(3.0), topRight: Radius.circular(3.0)),
               child: Image.network(
                 "",
                 width: 200,

@@ -17,7 +17,17 @@ class FirebaseStorageService extends GetxController {
     }
   }
 
-  Future<void> editaAqruivo({required String fileUrl, required String fileNome, required String nomeStorageFB}) async {
+  Future<void> editaArquivo({required String filePath, required String fileNome, required String nomeStorageFB}) async {
+    File file = File(filePath);
+
+    try {
+        await _storage.ref().child("$nomeStorageFB$fileNome").putData(file.readAsBytesSync());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> buscaArquivo({required String fileUrl, required String fileNome, required String nomeStorageFB}) async {
     try {
       var response = await http.get(Uri.parse(fileUrl));
 

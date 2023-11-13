@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pet_app/Models/Atendimento.dart';
 import 'package:pet_app/Models/Pet.dart';
-import 'package:pet_app/Models/PetParasitas.dart';
 import 'package:pet_app/Utils/util.dart';
-import 'package:pet_app/ViewModels/PetParasitasCRUD.dart';
+import 'package:pet_app/ViewModels/AtendimentoCRUD.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class PaginaPetParasitas extends StatefulWidget {
@@ -15,9 +15,9 @@ class PaginaPetParasitas extends StatefulWidget {
 }
 
 class _PaginaPetParasitasState extends State<PaginaPetParasitas> with SingleTickerProviderStateMixin {
-  final PetParasitaFB _vacinaPet = Get.put(PetParasitaFB());
+  final AtendimentoFB _atendimento = Get.put(AtendimentoFB());
 
-  List<PetParasita> listaPetParasitas = [];
+  List<Atendimento> listaPetParasitas = [];
   bool bCarregando = false;
 
   @override
@@ -31,10 +31,10 @@ class _PaginaPetParasitasState extends State<PaginaPetParasitas> with SingleTick
       bCarregando = true;
     });
 
-    listaPetParasitas = await _vacinaPet.buscaPetsParasitasFB(idPet: widget.pet.id!);
+    listaPetParasitas = await _atendimento.buscaPetParasitasFB(idPet: widget.pet.id!);
 
-    List<PetParasita> concludedFalse = listaPetParasitas.where((vacina) => vacina.concluida == false).toList();
-    List<PetParasita> concludedTrue = listaPetParasitas.where((vacina) => vacina.concluida == true).toList();
+    List<Atendimento> concludedFalse = listaPetParasitas.where((vacina) => vacina.concluida == false).toList();
+    List<Atendimento> concludedTrue = listaPetParasitas.where((vacina) => vacina.concluida == true).toList();
 
     concludedFalse.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0))); // Most recent first
     concludedTrue.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0))); // Most recent first
@@ -75,7 +75,7 @@ class _PaginaPetParasitasState extends State<PaginaPetParasitas> with SingleTick
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(3.0),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.3),
@@ -169,7 +169,7 @@ class _PaginaPetParasitasState extends State<PaginaPetParasitas> with SingleTick
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(3.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.3),
