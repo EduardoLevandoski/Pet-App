@@ -154,7 +154,7 @@ class _PaginaPerfilState extends State<PaginaPerfil> {
                                       await _storage.editaArquivo(
                                           filePath: filePath!, fileNome: fileStorage, nomeStorageFB: NomesStorageFB.usuarios);
                                     } else {
-                                      fileStorage = "${formataDataComleta.format(DateTime.now())}_${fileNome!}";
+                                      fileStorage = "${formataDataCompletaArquivo.format(DateTime.now())}_${fileNome!}";
 
                                       await _storage.enviaArquivo(
                                           filePath: filePath!, fileNome: fileStorage, nomeStorageFB: NomesStorageFB.usuarios);

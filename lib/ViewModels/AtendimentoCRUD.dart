@@ -8,6 +8,14 @@ class AtendimentoFB extends GetxController {
   final _db = FirebaseFirestore.instance;
 
 
+  Future<void> criaAtendimentoFB({required Atendimento atendimento}) async {
+    try {
+      await _db.collection(ColecoesFB.atendimentos).add(atendimento.toJson());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<Atendimento>> buscaPetVacinasFB({required int idPet}) async {
     try {
       final snapshot = await _db

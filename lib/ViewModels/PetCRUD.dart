@@ -18,6 +18,7 @@ class PetFB extends GetxController {
   Future<Pet>buscaPetPorID({required int id}) async {
     try {
       final snapshot = await _db.collection(ColecoesFB.pets).where("id", isEqualTo: id).get();
+
       return snapshot.docs.map((e) => Pet.fromSnapshot(e)).toList().first;
     } catch (e) {
       rethrow;

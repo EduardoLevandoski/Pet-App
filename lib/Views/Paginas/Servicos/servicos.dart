@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_app/Models/Agendamento.dart';
+import 'package:pet_app/Models/Atendimento.dart';
 import 'package:pet_app/Models/Clinica.dart';
 import 'package:pet_app/Models/Pet.dart';
 import 'package:pet_app/Models/Servico.dart';
@@ -10,6 +11,7 @@ import 'package:pet_app/Services/storage_service.dart';
 import 'package:pet_app/Utils/util.dart';
 import 'package:pet_app/Utils/util_cores.dart';
 import 'package:pet_app/ViewModels/AgendamentoCRUD.dart';
+import 'package:pet_app/ViewModels/AtendimentoCRUD.dart';
 import 'package:pet_app/ViewModels/PetCRUD.dart';
 import 'package:pet_app/ViewModels/ServicoCRUD.dart';
 import 'package:pet_app/ViewModels/constantesFB.dart';
@@ -29,6 +31,7 @@ class _PaginaServicosState extends State<PaginaServicos> with SingleTickerProvid
   final FirebaseStorageService _storage = Get.put(FirebaseStorageService());
   final ServicoFB _servico = Get.put(ServicoFB());
   final AgendamentoFB _agendamento = Get.put(AgendamentoFB());
+  final AtendimentoFB _atendimento = Get.put(AtendimentoFB());
   final PetFB _pet = Get.put(PetFB());
 
   List<Pet> listaPets = [];
@@ -381,13 +384,26 @@ class _PaginaServicosState extends State<PaginaServicos> with SingleTickerProvid
                           style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: corSecundaria.withRed(0))),
                       onPressed: () {
                         try {
+                          int idAtendimento = DateTime.now().millisecondsSinceEpoch;
+
+                          _atendimento.criaAtendimentoFB(atendimento: Atendimento(
+                            id: idAtendimento,
+                            idPet: pet!.id,
+                            data: servico.datasDisponiveis?[servico.indexDataSelecionada],
+                            status: 2,
+                            tipo: 3,
+                            servico: servico.descricao,
+                          ));
+
                           _agendamento.criaAgendamentoFB(agendamento: Agendamento(
                             id: DateTime.now().millisecondsSinceEpoch,
                             uid: user!.uid,
-                            petId: pet!.id,
+                            idAtendimento: idAtendimento,
+                            idPet: pet!.id,
                             clinicaNome: widget.clinica.nomeFantasia,
                             servicoDesc: servico.descricao,
                             data: servico.datasDisponiveis?[servico.indexDataSelecionada],
+                            status: 2,
                           ));
                         } catch (e) {
                           print(e);

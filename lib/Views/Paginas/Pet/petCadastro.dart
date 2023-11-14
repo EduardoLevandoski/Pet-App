@@ -335,7 +335,7 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
 
             if (user != null) {
               if (filePath != null && fileNome != null) {
-                fileStorage = "${formataDataComleta.format(DateTime.now())}_${fileNome!}";
+                fileStorage = "${formataDataCompletaArquivo.format(DateTime.now())}_${fileNome!}";
 
                 if (widget.pet?.imgNome != null && widget.pet?.imgUrl != null) {
                   await _storage.editaArquivo(

@@ -63,8 +63,8 @@ class _PaginaPetState extends State<PaginaPet> with SingleTickerProviderStateMix
                       "Tem certeza que deseja remover o pet?",
                       onPressedSim: () async {
 
-                        _agendamento.removeAgendamentoPet(petId: widget.pet.id!);
-                        _pet.removePet(id: widget.pet.id!);
+                        await _agendamento.removeAgendamentoPet(petId: widget.pet.id!);
+                        await _pet.removePet(id: widget.pet.id!);
 
                         Get.offAll(() => utilBottomNavigationBar());
                       },
@@ -86,7 +86,7 @@ class _PaginaPetState extends State<PaginaPet> with SingleTickerProviderStateMix
               PaginaPetInfo(pet: widget.pet),
               PaginaPetVacinas(pet: widget.pet),
               PaginaPetParasitas(pet: widget.pet),
-              PaginaPetAtendimento(),
+              PaginaPetAtendimento(pet: widget.pet),
             ],
           ),
         ),

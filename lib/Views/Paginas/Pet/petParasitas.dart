@@ -33,11 +33,11 @@ class _PaginaPetParasitasState extends State<PaginaPetParasitas> with SingleTick
 
     listaPetParasitas = await _atendimento.buscaPetParasitasFB(idPet: widget.pet.id!);
 
-    List<Atendimento> concludedFalse = listaPetParasitas.where((vacina) => vacina.concluida == false).toList();
-    List<Atendimento> concludedTrue = listaPetParasitas.where((vacina) => vacina.concluida == true).toList();
+    List<Atendimento> concludedFalse = listaPetParasitas.where((vacina) => vacina.status == 0).toList();
+    List<Atendimento> concludedTrue = listaPetParasitas.where((vacina) => vacina.status == 1).toList();
 
-    concludedFalse.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0))); // Most recent first
-    concludedTrue.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0))); // Most recent first
+    concludedFalse.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0)));
+    concludedTrue.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0)));
 
     listaPetParasitas = concludedFalse + concludedTrue;
 
@@ -112,9 +112,7 @@ class _PaginaPetParasitasState extends State<PaginaPetParasitas> with SingleTick
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text("Status"),
-                        Text(listaPetParasitas[index].concluida ?? false ? "Concluida" : "Em andamento",
-                            style: TextStyle(
-                                color: listaPetParasitas[index].concluida ?? false ? Colors.greenAccent : Colors.orangeAccent)),
+                        RetornaStatus(listaPetParasitas[index].status ?? 0),
                       ],
                     ),
                     const SizedBox(height: 10),

@@ -34,11 +34,11 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
 
     listaPetVacinas = await _atendimento.buscaPetVacinasFB(idPet: widget.pet.id!);
 
-    List<Atendimento> concludedFalse = listaPetVacinas.where((vacina) => vacina.concluida == false).toList();
-    List<Atendimento> concludedTrue = listaPetVacinas.where((vacina) => vacina.concluida == true).toList();
+    List<Atendimento> concludedFalse = listaPetVacinas.where((vacina) => vacina.status == 0).toList();
+    List<Atendimento> concludedTrue = listaPetVacinas.where((vacina) => vacina.status == 1).toList();
 
-    concludedFalse.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0))); // Most recent first
-    concludedTrue.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0))); // Most recent first
+    concludedFalse.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0)));
+    concludedTrue.sort((a, b) => (b.dataRepetir ?? DateTime(0)).compareTo(a.dataRepetir ?? DateTime(0)));
 
     listaPetVacinas = concludedFalse + concludedTrue;
 
@@ -113,9 +113,7 @@ class _PaginaPetVacinasState extends State<PaginaPetVacinas> with SingleTickerPr
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text("Status"),
-                        Text(listaPetVacinas[index].concluida ?? false ? "Concluida" : "Em andamento",
-                            style: TextStyle(
-                                color: listaPetVacinas[index].concluida ?? false ? Colors.greenAccent : Colors.orangeAccent)),
+                        RetornaStatus(listaPetVacinas[index].status ?? 2),
                       ],
                     ),
                     const SizedBox(height: 10),

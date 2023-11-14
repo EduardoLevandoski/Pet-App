@@ -52,7 +52,7 @@ class _PrincipalState extends State<Principal> with SingleTickerProviderStateMix
     });
 
     for (Agendamento agendamento in listaAgendamentos) {
-      agendamento.pet = await _pet.buscaPetPorID(id: agendamento.petId!);
+      agendamento.pet = await _pet.buscaPetPorID(id: agendamento.idPet!);
 
       if (agendamento.pet!.imgNome != null) {
         agendamento.pet!.imgUrl =
@@ -179,7 +179,7 @@ class _PrincipalState extends State<Principal> with SingleTickerProviderStateMix
 
   Widget widgetCarroselAgendamentos() {
     double altura = 200.0;
-    double largura = 300.0;
+    double largura = 320.0;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -301,14 +301,16 @@ class _PrincipalState extends State<Principal> with SingleTickerProviderStateMix
                             ),
                           ],
                         ),
-                        Text(
-                          listaAgendamentos[index].data != null
-                              ? formataDataHora.format(listaAgendamentos[index].data!)
-                              : "__:__",
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                          ),
-                        ),
+                        (((listaAgendamentos[index].status ?? 2) != 2))
+                            ? RetornaStatus(listaAgendamentos[index].status!)
+                            : Text(
+                                listaAgendamentos[index].data != null
+                                    ? ("Às ${formataDataHora.format(listaAgendamentos[index].data!)}")
+                                    : "__:__",
+                                style: const TextStyle(
+                                  fontSize: 16.0,
+                                ),
+                              ),
                       ],
                     ),
                   ],

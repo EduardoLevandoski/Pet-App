@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_app/Utils/util_cores.dart';
 
 final formataData = DateFormat('dd/MM/yyyy');
 final formataDataCurta = DateFormat('dd/MM/yy');
-final formataDataComleta = DateFormat('dd-MM-yyy-HH-mm-ss');
+final formataDataComleta = DateFormat('dd/MM/yyy HH:mm');
+final formataDataCompletaArquivo = DateFormat('dd-MM-yyy-HH-mm-ss');
 final formataDataHora = DateFormat('HH:mm');
 
 double RetornaAlturaTela(BuildContext context) {
@@ -107,4 +107,38 @@ AlertaSimOuNao({
       );
     },
   );
+}
+
+Widget RetornaStatus(int status) {
+  late String statusText;
+  late Color statusCor;
+
+  switch (status) {
+    case 0:
+      statusText = "Em andamento";
+      statusCor = Colors.orangeAccent;
+      break;
+    case 1:
+      statusText = "Concluído";
+      statusCor = Colors.greenAccent;
+      break;
+    case 2:
+      statusText = "Aguardando Horário do atendimento";
+      statusCor = Colors.orangeAccent;
+      break;
+    case 3:
+      statusText = "Aguardando entrega do Pet";
+      statusCor = Colors.orangeAccent;
+      break;
+    case 4:
+      statusText = "Pet pronto para buscar";
+      statusCor = Colors.pinkAccent;
+      break;
+    case 5:
+      statusText = "Cancelado";
+      statusCor = Colors.redAccent;
+      break;
+  }
+
+  return Text(statusText, style: TextStyle(color: statusCor, fontWeight: FontWeight.w600));
 }
