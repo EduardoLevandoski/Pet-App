@@ -301,8 +301,9 @@ class _PrincipalState extends State<Principal> with SingleTickerProviderStateMix
                             ),
                           ],
                         ),
+                        const SizedBox(width: 35),
                         (((listaAgendamentos[index].status ?? 2) != 2))
-                            ? RetornaStatus(listaAgendamentos[index].status!)
+                            ? Expanded(child: RetornaStatus(listaAgendamentos[index].status!))
                             : Text(
                                 listaAgendamentos[index].data != null
                                     ? ("Às ${formataDataHora.format(listaAgendamentos[index].data!)}")

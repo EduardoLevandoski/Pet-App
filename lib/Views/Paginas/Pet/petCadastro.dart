@@ -215,6 +215,8 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
               labelText: sLabel,
               suffixIcon: IconButton(
                 onPressed: () async {
+                  FechaTeclado(context);
+
                   DateTime? pickedDate = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
@@ -360,7 +362,7 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
                       idade: data,
                       sexo: sexo,
                       especie: especie,
-                      raca: raca,
+                      raca: _controladoraRaca.text,
                       peso: _controladoraPeso.text.isNotEmpty ? double.tryParse(_controladoraPeso.text) : null,
                       imgNome: widget.pet!.imgNome ?? fileStorage,
                     ));
@@ -373,7 +375,7 @@ class _PaginaPetCadastroState extends State<PaginaPetCadastro> with SingleTicker
                   idade: data,
                   sexo: sexo,
                   especie: especie,
-                  raca: raca,
+                  raca: _controladoraRaca.text,
                   peso: _controladoraPeso.text.isNotEmpty ? double.tryParse(_controladoraPeso.text) : null,
                   imgNome: fileStorage,
                 ));
