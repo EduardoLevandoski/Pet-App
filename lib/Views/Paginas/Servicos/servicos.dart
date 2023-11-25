@@ -63,7 +63,9 @@ class _PaginaServicosState extends State<PaginaServicos> with SingleTickerProvid
       }
     }
 
-    pet = listaPets.first;
+    if (listaPets.isNotEmpty) {
+      pet = listaPets.first;
+    }
 
     setState(() {
       bCarregando = false;
@@ -287,12 +289,21 @@ class _PaginaServicosState extends State<PaginaServicos> with SingleTickerProvid
                     ),
                     const SizedBox(height: 10.0),
                     TextButton(
-                      onPressed: () {
-                        DialogServico(listaServicos[index], listaPets);
-                      },
+                      onPressed: listaPets.isNotEmpty
+                          ? () {
+                              DialogServico(listaServicos[index], listaPets);
+                            }
+                          : () {
+                              Get.snackbar(
+                                  "Alerta", "É necessário ter pelo menos um pet cadastrado para solicitar um serviço",
+                                  backgroundColor: Colors.orangeAccent, colorText: Colors.white);
+                            },
                       child: Text(
                         "AGENDAR",
-                        style: TextStyle(fontWeight: FontWeight.w600, color: corSecundaria, fontSize: 12.0),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: listaPets.isNotEmpty ? corSecundaria : Colors.grey,
+                            fontSize: 12.0),
                       ),
                     ),
                   ],
@@ -386,7 +397,8 @@ class _PaginaServicosState extends State<PaginaServicos> with SingleTickerProvid
                         try {
                           int idAtendimento = DateTime.now().millisecondsSinceEpoch;
 
-                          _atendimento.criaAtendimentoFB(atendimento: Atendimento(
+                          _atendimento.criaAtendimentoFB(
+                              atendimento: Atendimento(
                             id: idAtendimento,
                             idPet: pet!.id,
                             data: servico.datasDisponiveis?[servico.indexDataSelecionada],
@@ -395,7 +407,8 @@ class _PaginaServicosState extends State<PaginaServicos> with SingleTickerProvid
                             servico: servico.descricao,
                           ));
 
-                          _agendamento.criaAgendamentoFB(agendamento: Agendamento(
+                          _agendamento.criaAgendamentoFB(
+                              agendamento: Agendamento(
                             id: DateTime.now().millisecondsSinceEpoch,
                             uid: user!.uid,
                             idAtendimento: idAtendimento,
@@ -405,6 +418,10 @@ class _PaginaServicosState extends State<PaginaServicos> with SingleTickerProvid
                             data: servico.datasDisponiveis?[servico.indexDataSelecionada],
                             status: 2,
                           ));
+
+                          Get.snackbar(
+                              "Sucesso", "Serviço solicitado com sucesso, verifique o atendimento na pagina principal ou no seu pet!",
+                              backgroundColor: Colors.green, colorText: Colors.white);
                         } catch (e) {
                           print(e);
                         }
